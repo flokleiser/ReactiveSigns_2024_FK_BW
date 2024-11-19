@@ -1,5 +1,5 @@
 # Templates for Reactive Signs Module 2023
-Templates for the 2023 module
+Templates for the 2024 module
 
 The repository contains a number of basic examples in the Poster_Templates, together with a custom libraries for handling skeleton tracking etc. 
 
