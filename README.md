@@ -15,6 +15,9 @@ function setup() {
 }
 
 function draw() {
+    let number = poster.getCounter(); // with this function we can get the number that should be displayed
+    text(number,width/2,height/2)
+
 /*important!*/ poster.posterTasks(); // do not remove this last line!  
 } 
  
@@ -28,17 +31,6 @@ function draw() {
  poster.position.z  // represents distance from the user to the screen. 
 
 poster.posNormal.x,  poster.posNormal.y,  poster.posNormal.z  //The same as "position" but normalised. i.e values between 0 and 1. 
-```
-
-There are two screens (0 and 1) for which you can access the coordinates with the following variables. 
-
- ```javascript
-  poster.screens[i].x // x position of screen
-  poster.screens[i].y // y position of screen. Tip: this will always be 0! 
-  poster.screens[i].w // width of screen
-  poster.screens[i].h // height of screen
-  poster.screens[i].cntX // x position of screen center
-  poster.screens[i].cntY // y position of screen center
 ```
 
 These variables provide units which are safer than using pixel coordinates. 

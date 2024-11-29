@@ -6,24 +6,23 @@ import { setUpGui, dragElement } from './GUI.js'
 import { setUpOSC, realsensePos, lastOSC, OSCdepthData, OSCdepthW, OSCdepthH, OSCtracking } from './OSC_Control.js'
 import { recordCanvas, recordSetup, stopRecordCanvas, recording } from './recordCanvas.js'
 
-
-
 // debug gui
 let Settings = {
   poseDetection: false,
 }
 
 let webCamWrapper;
+let currentNumber = 0;
 
-
-const pageWidth = 1080 * 2; // resolution 
-const pageHeight = 1920; //
-
+const pageWidth = 1080; // resolution 
+const pageHeight = 1920; // resolution 
+let incrementCounterInterval;
+let skeletons = poses;
 export let camera, poseDetection;
 export let position;// blob center 
 export let posNormal// blob center normalised
 export let mainP5Sketch;
-export let skeletons = poses;
+
 export let depthData;
 export let depthW; // width of data array
 export let depthH; // width of height array
@@ -32,7 +31,7 @@ export let oscSignal = false;// osc signal
 export let debug = true;
 
 // helper variables for scalable positioning
-export const screens = [{ x: 0, y: 0, w: 100, h: 100, cntX: 50, cntY: 50 }, { x: 0, y: 0, w: 100, h: 100, cntX: 50, cntY: 50 }]
+export const screens = [{ x: 0, y: 0, w: 100, h: 100, cntX: 50, cntY: 50 }]
 export let vw = 1; // 1 percent of viewport width;
 export let vh = 1; // 1 percent of viewport height;
 
@@ -64,6 +63,7 @@ export function setup(p5Instance, modelURL, _enableDepth, _animationLoopEnabled)
   posNormal = createVector(0, 0, 0); // normalised
   correctAspectRatio();
   mainP5Sketch = p5Instance;
+  console.log(mainP5Sketch);
   mainP5Sketch.mousePressed = function () {
 
     if (mouseButton === LEFT) {
@@ -87,6 +87,9 @@ export function setup(p5Instance, modelURL, _enableDepth, _animationLoopEnabled)
       resized();
     }
   });
+
+
+
   window.onresize = resized;
 
   const pressed = new Set();
@@ -102,6 +105,19 @@ export function setup(p5Instance, modelURL, _enableDepth, _animationLoopEnabled)
       if (pressed.has("Shift") || pressed.has("ShiftLeft") && pressed.has("KeyS") && recording) {
         stopRecordCanvas();
       }
+
+      // handle counter 
+
+       if (pressed.has("ArrowUp")) {
+        // cancel incrementCounter interval and increase counter by 1
+        clearInterval(incrementCounterInterval);
+        incrementCounter();
+      } else if (pressed.has("ArrowDown")) {
+        clearInterval(incrementCounterInterval);
+        deincrementCounter();
+      }
+
+
     }
 
     try {
@@ -122,6 +138,10 @@ export function setup(p5Instance, modelURL, _enableDepth, _animationLoopEnabled)
     } catch (e) {
     }
   });
+
+  // counter 
+
+  incrementCounterInterval = setInterval(incrementCounter, 1000); // Call incrementCounter every 1000 milliseconds (1 second)
 }
 
 // mouse click
@@ -220,7 +240,28 @@ function cameraRestore() {
   }
 }
 
+function incrementCounter() {
+  if (currentNumber>0) {
+   currentNumber--;
+  } else {
+    currentNumber = 9;
+  }
+}
+function deincrementCounter() {
+  if (currentNumber<9) {
+   currentNumber++;
+  } else {
+    currentNumber = 0;
+  }
+}
+
+export function getCounter() {
+  return currentNumber; 
+}
+
 export function posterTasks() {
+
+
   if (poses != undefined && Settings.poseDetection == true) {
     handlePosenet();
   } else if (window.performance.now() - lastOSC < 1000 && realsensePos != undefined) {
@@ -262,11 +303,13 @@ export function posterTasks() {
     mainP5Sketch.noStroke();
     fpsAverage = fpsAverage * 0.9;
     fpsAverage += mainP5Sketch.frameRate() * 0.1;
-    mainP5Sketch.textSize(1.2 * vw);
+    mainP5Sketch.textSize(2.2 * vw);
     mainP5Sketch.textAlign(mainP5Sketch.LEFT, mainP5Sketch.TOP);
     mainP5Sketch.text("fps: " + Math.floor(fpsAverage), screens[0].x + vw, screens[0].y + vh * 1);
     mainP5Sketch.text("Streaming: " + oscSignal, screens[0].x + vw, screens[0].y + vh * 3);
     mainP5Sketch.text("Tracking: " + tracking, screens[0].x + vw, screens[0].y + vh * 5);
+    mainP5Sketch.text("Shift - r start record", screens[0].x + vw, screens[0].y + vh * 7);
+    mainP5Sketch.text("Shift - s stop record ", screens[0].x + vw, screens[0].y + vh * 8);
     mainP5Sketch.noFill();
     mainP5Sketch.stroke(0, 180, 180);
     mainP5Sketch.rectMode(CORNER);
@@ -274,8 +317,15 @@ export function posterTasks() {
     // line between screens
     for (let i = 1; i < screens.length; i++) {
       screens[i].w = mainP5Sketch.floor(width / screens.length);
-      mainP5Sketch.line(screens[i].x, screens[i].y, screens[i].x, screens[i].y + screens[i].h); // line between 1st and 2nd screen
+      mainP5Sketch.line(screens[i].x, screens[i].y, screens[i].x, screens[i].y + screens[i].h); // line between multiple screens
     }
+    // Format lines for 2024, show squate in the center. 
+
+    let line1y = (mainP5Sketch.height-mainP5Sketch.width)/2;
+    let line2y = line1y + mainP5Sketch.width;
+    mainP5Sketch.line(screens[0].x, line1y, screens[0].x + screens[0].w, line1y); // top    
+    mainP5Sketch.line(screens[0].x, line2y, screens[0].x + screens[0].w, line2y); // top    
+    //
     mainP5Sketch.fill(0, 180, 180);
     mainP5Sketch.noStroke();
     mainP5Sketch.circle(position.x, position.y, position.z * 10);
