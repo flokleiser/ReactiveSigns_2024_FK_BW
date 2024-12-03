@@ -5,7 +5,7 @@ function preload() {
 }
 function setup() {
   /*important!*/ createCanvas(poster.getWindowWidth(), poster.getWindowHeight()); // Don't remove this line. 
- /*important!*/ poster.setup(this, "models/movenet/model.json");  // Don't remove this line. 
+ /*important!*/ poster.setup(this, "/Poster_Templates/libraries/assets/models/movenet/model.json");  // Don't remove this line. 
   textFont(font);
 }
 
@@ -14,13 +14,16 @@ function draw() {
   fill(255);
   wordEffect(poster.getCounter(), width / 2, height / 2);
 /*important!*/ poster.posterTasks(); // do not remove this last line!  
+
+
+
 }
 
 function windowScaled() { // this is a custom event called whenever the poster is scaled
-  textSize(10 * poster.vw);
+ // textSize(10 * poster.vw);
 }
 
-function wordEffect(word, x, y) {
+function wordEffect(number, x, y) {
   push()
     textSize(120 * poster.vw);
     translate(x, y)
@@ -28,11 +31,15 @@ function wordEffect(word, x, y) {
     rotate(rotation);
     // The textBounds function returns the bounding box of the text.
     // This can be very useful when you need to precisely position text.
-    let bbox = font.textBounds(""+word, 0, 0,);
+    let bbox = font.textBounds(""+number, 0, 0,);
     translate((-(bbox.x)/2)-(bbox.w/2), +(bbox.h/2));
     // uncommment the following line to see the bounding box
-    // rect(bbox.x, bbox.y, bbox.w, bbox.h);
-    text(""+word, 0, 0)
+    
+   
+    text(""+number, 0, 0)
+    noFill();
+    stroke(255,0,0)
+    rect(bbox.x, bbox.y, bbox.w, bbox.h);
   pop();
 }
 
