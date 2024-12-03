@@ -27,7 +27,7 @@ function draw() {
 
 function lineEffect() {
   push();
-  /*
+  
   let spaceX = width/poster.depthW;
   let spaceY = height/poster.depthH;
   spaceX += poster.vw*0.1;
@@ -47,7 +47,7 @@ function lineEffect() {
 		endShape();
 	}
   pop();
-*/
+/*
 let spaceX = width/images[0].width;
 let spaceY = height/images[0].height;
 spaceX += poster.vw*0.1;
@@ -68,7 +68,7 @@ for (let y = 0; y<images[0].height; y++) {
 }
 pop();
   image(images[0],0,0); // uncomment to see how the buffer actually looks 
-
+*/
 }
 
 
