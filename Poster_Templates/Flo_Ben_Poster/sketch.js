@@ -2,7 +2,8 @@
 let rotationHistory = [];
 let font;
 function preload() {  
-  font = loadFont('/Poster_Templates/demo_poster_example/barlow_condensed.otf');  
+  font = loadFont('/Poster_Templates/Flo_Ben_Poster/barlow_condensed.otf');  
+  image1 = loadImage('/Poster_Templates/Flo_Ben_Poster/images/1.png');
 }
 function setup() {
   /*important!*/ createCanvas(poster.getWindowWidth(), poster.getWindowHeight()); // Don't remove this line. 
@@ -15,7 +16,13 @@ function draw() {
  console.log(width, height);
   fill(255);
   wordEffect(poster.getCounter(), width / 2, height / 2);
-  //poster.Tasks runs the counter and deals with the resizing
+
+  if (poster.getCounter() === 0) {
+    image(image1, 0, 0, width, height);
+    
+  }
+
+  // poster.Tasks runs the counter and deals with the resizing
 /*important!*/ poster.posterTasks(); // do not remove this last line!  
 }
 
