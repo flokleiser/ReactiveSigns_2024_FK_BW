@@ -2,12 +2,11 @@
 let rotationHistory = [];
 let font;
 function preload() {  
-  // load the font
   font = loadFont('/Poster_Templates/demo_poster_example/barlow_condensed.otf');  
 }
 function setup() {
   /*important!*/ createCanvas(poster.getWindowWidth(), poster.getWindowHeight()); // Don't remove this line. 
- /*important!*/ poster.setup(this, "/Poster_Templates/libraries/assets/models/movenet/model.json");  // Don't remove this line. 
+ /*important!*/ poster.setup(this, "models/movenet/model.json");  // Don't remove this line. 
   textFont(font);
 }
 
@@ -16,6 +15,7 @@ function draw() {
  console.log(width, height);
   fill(255);
   wordEffect(poster.getCounter(), width / 2, height / 2);
+  //poster.Tasks runs the counter and deals with the resizing
 /*important!*/ poster.posterTasks(); // do not remove this last line!  
 }
 
