@@ -2,7 +2,8 @@
 let rotationHistory = [];
 let font;
 function preload() {  
-  font = loadFont('/Poster_Templates/Flo_Ben_Poster/barlow_condensed.otf');  
+  // font = loadFont('/Poster_Templates/Flo_Ben_Poster/barlow_condensed.otf');  
+  font = loadFont('/Poster_Templates/Flo_Ben_Poster/Fit_Variable.otf');
   image1 = loadImage('/Poster_Templates/Flo_Ben_Poster/images/1.png');
 }
 function setup() {
@@ -12,17 +13,21 @@ function setup() {
 }
 
 function draw() {
-  background(0);
+  // background(0);
+  background(poster.getCounter %  2 === 0 ? 0 : 255);
  console.log(width, height);
   fill(255);
   wordEffect(poster.getCounter(), width / 2, height / 2);
+  
+  arc()
 
+
+  //loading the images
   if (poster.getCounter() === 0) {
-    image(image1, 0, 0, width, height);
-    
+    // image(image1, 0, 0, width, height);
+    console.log('test')
   }
 
-  // poster.Tasks runs the counter and deals with the resizing
 /*important!*/ poster.posterTasks(); // do not remove this last line!  
 }
 
@@ -31,7 +36,6 @@ function windowScaled() { // this is a custom event called whenever the poster i
 }
 
 function wordEffect(word, x, y) {
-
   let size = 1;
   push()
   translate(x, y)
@@ -51,7 +55,7 @@ function wordEffect(word, x, y) {
     fill(colorStep*i);
     push()  
     
-    rotate(rotationHistory[i].rotation);
+    // rotate(rotationHistory[i].rotation);
     size = maxSize-(stepSize*(i)) + Math.min(maxSize,minSize);
     textSize(size);
     let bbox = font.textBounds(rotationHistory[i].char, 0, 0);
