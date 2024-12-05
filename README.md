@@ -1,3 +1,31 @@
+# Questions:
+
+Disable counter?
+Luke fragen wegen 150 --> wie es geht
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Templates for Reactive Signs Module 2023
 Templates for the 2024 module
 
