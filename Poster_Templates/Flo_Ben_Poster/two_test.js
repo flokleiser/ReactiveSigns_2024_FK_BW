@@ -1,6 +1,5 @@
 //idea: continuous "zoom in"
 
-
 let rotationHistory = [];
 let images = [];
 let font;
@@ -20,7 +19,9 @@ function setup() {
 }
 
 function draw() {
-  background(poster.getCounter() % 2 === 0 ? 255 : 0);
+  //remove background for kinda cool effect too
+  // background(poster.getCounter() % 2 === 0 ? 255 : 0);  
+  background(50)
 
   if (poster.getCounter() !== previousCounter) {
     transitionScale = 0;
