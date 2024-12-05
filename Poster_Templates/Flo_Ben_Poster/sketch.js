@@ -1,7 +1,8 @@
 let rotationHistory = [];
 let font;
 let image0, image1, image2, image3, image4, image5, image6, image7, image8, image9;
-let aspectRatio = 700 / 500;
+let aspectRatio = 1.4
+
 
 function preload() {  
   image0 = loadImage('/Poster_Templates/Flo_Ben_Poster/images/0.png');
