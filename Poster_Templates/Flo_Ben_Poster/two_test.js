@@ -35,13 +35,30 @@ function draw() {
   let anchorX = width / 2 + dynamicOffsetX(poster.getCounter());
   let anchorY = height / 2 + dynamicOffsetY(poster.getCounter());
   translate(anchorX, anchorY);
+  // translate(width/2, anchorY);
+  // translate(width / 2, height / 2);
 
+  let outgoingScale = 1 + transitionScale;
   let incomingScale = transitionScale;
+  let outgoingIndex = (poster.getCounter() - 1 + 10) % 10; 
 
   //kinda cool weird effect?
   // let outgoingIndex = (poster.getCounter() % 10)
+
+  // tests with outgoing image thing
+  // if (outgoingIndex >= 0) {
+  //   let outgoingImage = images[outgoingIndex];
+  //   image(outgoingImage, 0, 0, width * outgoingScale, (height / aspectRatio) * outgoingScale);
+  // }
+
   let incomingImage = images[poster.getCounter()];
+  let outgoingImage = images[poster.getCounter() - 1]
+  if (outgoingImage === undefined) {
+    outgoingImage = images[9];
+  }
   image(incomingImage, 0, 0, width * incomingScale, (height / aspectRatio) * incomingScale);
+  // image(outgoingImage, 0, 0, width * 0.2, (height / aspectRatio * 0.2) );
+  image(outgoingImage, 0, -height/3, width * 0.2, (height / aspectRatio * 0.2) );
 
 
   pop();
