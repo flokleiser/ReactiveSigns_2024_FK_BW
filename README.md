@@ -16,7 +16,13 @@
 
 # Inspiration:
 
+### Interaction:
+- area/square that is in focus, moving with the viewer
+![](/inspiration_gifs/Mars%20Maiers.jpeg)
+
+
 ### Bens gif:
+![](/inspiration_gifs/ConceptAnimation.gif)
 ![](/inspiration_gifs/test%20animation.gif)
 
 ### pinterest gifs:
