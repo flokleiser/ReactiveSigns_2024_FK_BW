@@ -1,6 +1,3 @@
-//idea: continuous "zoom in"
-
-
 let rotationHistory = [];
 let images = [];
 let font;
@@ -10,6 +7,7 @@ let previousCounter = -1;
 
 function preload() {  
   for (let i = 0; i < 10; i++) {
+    // images[i] = loadImage(`/Poster_Templates/Flo_Ben_Poster/images/originals/${i}.png`);
     images[i] = loadImage(`/Poster_Templates/Flo_Ben_Poster/images/${i}.png`);
   }
 }
@@ -42,7 +40,7 @@ function draw() {
   // let outgoingIndex = (poster.getCounter() % 10)
   let incomingImage = images[poster.getCounter()];
   image(incomingImage, 0, 0, width * incomingScale, (height / aspectRatio) * incomingScale);
-
+  console.log(incomingImage.width, incomingImage.height)
 
   pop();
 
