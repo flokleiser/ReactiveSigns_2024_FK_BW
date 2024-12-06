@@ -11,3 +11,21 @@
 
 #### General:
 - [ ] Clarification on how its gonna look (countdown or 150)
+
+
+
+# Inspiration:
+
+### Bens gif:
+![](/inspiration_gifs/test%20animation.gif)
+
+### pinterest gifs:
+![](https://i.pinimg.com/originals/41/b8/ec/41b8ec07e965c13ab0b5735abbdf883e.gif)
+![](https://i.pinimg.com/originals/68/56/8e/68568e8eaf361bbe06b39270f266cb4c.gif)
+![](https://i.pinimg.com/originals/4e/b2/a8/4eb2a8f85aeb7e71155c86e85ce5a6df.gif)
+![](https://i.pinimg.com/originals/70/57/fa/7057faca31205869802f5b3fe492f838.gif)
+![](https://i.pinimg.com/originals/38/07/50/380750b95482946ee1ec1ac882e2a320.gif)
+![]()
+![]()
+![]()
+![]()
