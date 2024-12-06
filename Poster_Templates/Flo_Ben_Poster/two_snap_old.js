@@ -48,8 +48,8 @@ function draw() {
     let anchorY = height / 2
     translate(anchorX, anchorY);
 
-    let outgoingScale = 2*transitionScale;
-    let incomingScale= transitionScale
+    let outgoingScale = transitionScale;
+    let incomingScale= transitionScale + 1
 
     // let incomingImage = images[poster.getCounter()];
     let incomingImage = images[poster.getCounter() - 1];
@@ -57,9 +57,6 @@ function draw() {
         incomingImage = images[9];
     }
     let outgoingImage = images[poster.getCounter()];
-    // if (outgoingImage === undefined) {
-    //     outgoingImage = images[9];
-    // }
 
     image(incomingImage, 0, 0, width * incomingScale, (height / aspectRatio) * incomingScale);
     image(outgoingImage, 0, 0, width * outgoingScale, (height / aspectRatio) * outgoingScale);
