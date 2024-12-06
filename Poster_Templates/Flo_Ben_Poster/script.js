@@ -42,7 +42,7 @@ function setup() {
 
 function draw() {
     // background(poster.getCounter() % 2 === 0 ? 0 : 255);
-      background(poster.getCounter() % 2 === 0 ? 255 : 0);
+    // background(poster.getCounter() % 2 === 0 ? 255 : 0);
      background(50)
 
     if (poster.getCounter() !== previousCounter) {
@@ -78,7 +78,6 @@ function draw() {
 
 */
 
-    // let incomingScale= transitionScale + 0.6 
     let incomingScale= transitionOutScale
     
 

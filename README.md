@@ -1,7 +1,11 @@
-# Questions for Luke:
+# To-Do:
 
-Feedback:
-list with 3 values: end rotation, end position, end scale
+- [ ] Numbers "rotate" in
+- [ ] Outgoing numbers correct scale
+
+
+___
+# Questions for Luke:
 
 #### Keypress related:
 - [ ] How to stop Poster_Control.js from preventing keyboard/mouse inputs
@@ -15,8 +19,7 @@ list with 3 values: end rotation, end position, end scale
 #### General:
 - [ ] Clarification on how its gonna look (countdown or 150)
 
-
-
+___
 # Inspiration:
 
 ### Interaction:
