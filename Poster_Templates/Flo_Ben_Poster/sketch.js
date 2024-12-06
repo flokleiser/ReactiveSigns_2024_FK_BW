@@ -2,8 +2,10 @@ let rotationHistory = [];
 let images = [];
 let font;
 let aspectRatio = 1.375
-let transitionScale = 1;
+// let transitionScale = 1;
+let transitionScale = 0;
 let previousCounter = -1;
+let increment = 0.05;
 
 function preload() {  
   for (let i = 0; i < 10; i++) {
@@ -25,7 +27,13 @@ function draw() {
     previousCounter = poster.getCounter();
   }
 
-  transitionScale += 0.03;
+  transitionScale += increment
+  // if (transitionScale < 1) {
+  //   increment = 0.08
+  // } else {
+  //   increment = 0
+  // }
+
 
   push();
   imageMode(CENTER);
@@ -35,12 +43,19 @@ function draw() {
   translate(anchorX, anchorY);
 
   let incomingScale = transitionScale;
+  // if (transitionScale < 1) {
+  //   transitionScale += 0.05;
+  //   console.log('test')
+  // }
+  // if (transitionScale > 1) {
+  //   transitionScale -= 0.05
+  // }
 
   //kinda cool weird effect?
   // let outgoingIndex = (poster.getCounter() % 10)
   let incomingImage = images[poster.getCounter()];
   image(incomingImage, 0, 0, width * incomingScale, (height / aspectRatio) * incomingScale);
-  console.log(incomingImage.width, incomingImage.height)
+  // console.log(incomingImage.width, incomingImage.height)
 
   pop();
 
@@ -129,13 +144,11 @@ function windowScaled() {
 
 
 function dynamicOffsetX(counter) {
-  // let offsets = [0, 50, -50, 100, -100, 75, -75, 125, -125, 0];
   let offsets = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   return offsets[counter % offsets.length];
 }
 
 function dynamicOffsetY(counter) {
-  // let offsets = [0, -50, 50, -100, 100, -75, 75, -125, -125, 150];
   let offsets = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   return offsets[counter % offsets.length];
 }
