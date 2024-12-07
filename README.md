@@ -7,9 +7,10 @@
 ___
 
 
-
-<img src="/inspiration_gifs/ConceptAnimation.gif" width="300" style="display: inline-block; margin-right: 10px;">
-<img src="/inspiration_gifs/showcase.gif" width="300" style="display: inline-block;">
+<div style="display:flex;flex-direction:row;justify-content:center">
+<img src="/inspiration_gifs/showcase3.gif" width="275" style="padding-right:20px">
+<img src="/inspiration_gifs/ConceptAnimation.gif" width="275" style="padding-left:20px">
+</div>
 
 ___
 # Inspiration:
@@ -31,3 +32,7 @@ ___
 ### Interaction:
 - area/square that is in focus, moving with the viewer
 ![](/inspiration_gifs/Mars%20Maiers.jpeg)
+
+
+<img src="/inspiration_gifs/ConceptAnimation.gif" width="300" style="display: inline-block; margin-right: 10px;">
+<img src="/inspiration_gifs/showcase.gif" width="300" style="display: inline-block;">

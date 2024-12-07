@@ -94,16 +94,16 @@ function draw() {
     let targetOutScale = 4.5
 
     // fast speed
-    // transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*4);
-    // transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement*0.5);
+    transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*4);
+    transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement*0.35);
 
     // middle speed
     // transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*3);
     // transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement*0.3);
 
     // slow speed
-    transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*1.55);
-    transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement*0.25);
+    // transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*1.55);
+    // transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement*0.25);
     
 
     // out easing tests
