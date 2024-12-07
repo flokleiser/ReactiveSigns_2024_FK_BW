@@ -18,7 +18,8 @@ let startOutScale
 
 let transitionInScale = 0;
 let transitionOutScale = 0.6;
-let transitionInIncrement = 0.02;
+// let transitionInIncrement = 0.02;
+let transitionInIncrement = 0.06;
 let transitionOutIncrement = 0.09;
 let incomingRotation = 0;
 
@@ -26,27 +27,26 @@ let transitionInProgress
 let transitionOutProgress
 
 let anchorPoints = [
-    // { x: 0.5, y: 0.5 },
-    // { x: 0.5, y: 0.5 },
-    // { x: 0.5, y: 0.5 },
-    // { x: 0.5, y: 0.5 },
-    // { x: 0.5, y: 0.5 },
-    // { x: 0.5, y: 0.5 },
-    // { x: 0.5, y: 0.5 },
-    // { x: 0.5, y: 0.5 },
-    // { x: 0.5, y: 0.5 },
-    // { x: 0.5, y: 0.5 }
-
+    // 0 big
     { x: -0.3, y: 0 },
-    { x: 0, y: 0 },
-    { x: 0, y: 0 },
-    { x: 0, y: 0 },
-    { x: 0, y: 0 },
-    { x: 0, y: 0 },
-    { x: 0, y: 0 },
-    { x: 0, y: 0 },
-    { x: 0, y: 0 },
-    { x: -0.4, y: 0 }
+    // 1 big
+    { x: -0.3, y: 0 },
+    // 2 big
+    { x: -0.3, y: 0 },
+    // 3 big
+    { x: -0.3, y: -0.3 },
+    // 4 big    
+    { x: 0.1, y: -0.3 },
+    // 5 big
+    { x: 0.3, y: -0.3},
+    // 6 big
+    { x: 0.3, y: -0.17 },
+    // 7 big
+    { x: -0, y: 0.3 },
+    // 8 big
+    { x: 0.2, y: 0.2 },
+    // 9 big
+    { x: -0.2, y: 0.2 }
 ];
 
 let currentOutgoingAnchor = { x: 0.5, y: 0.5 }; 
@@ -65,7 +65,8 @@ function setup() {
 }
 
 function draw() {
-    background(50);
+    background(poster.getCounter() % 2 === 0 ? 255 : 0);
+    // background(50);
 
     let outgoingIndex = poster.getCounter();
     let incomingIndex = (poster.getCounter() - 1 + images.length) % images.length;
@@ -78,8 +79,8 @@ function draw() {
     if (poster.getCounter() !== previousCounter) {
         transitionInScale = 0;
         transitionOutScale = 0.6;
-        transitionInIncrement = 0.02;
-        transitionOutIncrement = 0.09;
+        transitionInIncrement = 0.03;
+        transitionOutIncrement = 0.2;
 
         incomingRotation = PI / 2; 
         currentOutgoingAnchor = { x: 0, y: 0};
@@ -91,20 +92,18 @@ function draw() {
 
     let targetInScale = 0.6;
     // let targetOutScale = 3;
-    let targetOutScale = 1.5
+    // let targetOutScale = 1.2
+    let targetOutScale = 2.5 
 
     // transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement * 4);
     // transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement);
-    transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*1.5);
-    transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement*0.9);
+    transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*4);
+    // transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement*0.9);
 
-    // other easing tests
-    // transitionInProgress += 0.04;
-    // transitionInProgress = constrain(transitionInProgress, 0, 1);
-    // transitionInScale = transitionInProgress * transitionInProgress * targetInScale;
-    // transitionOutProgress += 0.05;
-    // transitionOutProgress = constrain(transitionOutProgress, 1, 2);
-    // transitionOutScale = transitionOutProgress * transitionOutProgress * targetInScale;
+    // out easing tests
+    transitionOutProgress += 0.04;
+    transitionOutProgress = constrain(transitionOutProgress, 1, 3);
+    transitionOutScale = transitionOutProgress * transitionOutProgress;
 
 
     currentOutgoingAnchor.x = lerp(currentOutgoingAnchor.x, targetOutgoingAnchor.x, transitionOutIncrement);
@@ -116,15 +115,15 @@ function draw() {
         incomingRotation = 0;
     }
 
+
     push();
     imageMode(CENTER);
     translate(
         width / 2 - (currentOutgoingAnchor.x) * width * transitionOutScale,
         height / 2 - (currentOutgoingAnchor.y) * height / aspectRatio * transitionOutScale
     );
- 
     image(outgoingImage, 0, 0, width * transitionOutScale, (height / aspectRatio) * transitionOutScale);
-    console.log("in: ", incomingIndex, "out: ", outgoingIndex);
+    // console.log("in: ", incomingIndex, "out: ", outgoingIndex);
     pop();
 
     push();
