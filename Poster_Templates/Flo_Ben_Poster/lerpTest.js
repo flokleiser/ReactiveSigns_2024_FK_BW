@@ -1,5 +1,6 @@
 //TODO: incomingimage 0 - 0.5, outgoingimage 0.5 - 1
 //TODO: lerp in and out of incoming and outgoing image
+//TODO: higher quality png
 
 let rotationHistory = [];
 let images = [];
@@ -8,7 +9,6 @@ let aspectRatio = 1.375;
 
 let previousCounter = -1;
 let increment = 0.05;
-// let transitionOutIncrement = 0.09
 let transitionFlag = true;
 
 let incomingImage;
@@ -18,7 +18,6 @@ let startOutScale
 
 let transitionInScale = 0;
 let transitionOutScale = 0.6;
-// let transitionInIncrement = 0.02;
 let transitionInIncrement = 0.06;
 let transitionOutIncrement = 0.09;
 let incomingRotation = 0;
@@ -27,26 +26,27 @@ let transitionInProgress
 let transitionOutProgress
 
 let anchorPoints = [
-    // 0 big
-    { x: -0.3, y: 0 },
-    // 1 big
-    { x: -0.3, y: 0 },
-    // 2 big
-    { x: -0.3, y: 0 },
-    // 3 big
-    { x: -0.3, y: -0.3 },
-    // 4 big    
-    { x: 0.1, y: -0.3 },
-    // 5 big
-    { x: 0.3, y: -0.3},
-    // 6 big
-    { x: 0.3, y: -0.17 },
-    // 7 big
-    { x: -0, y: 0.3 },
-    // 8 big
+    // 0
+    { x: -0.34, y: 0 },
+    // 1
+    { x: 0.25, y: 0.2 },
+    // 2 
+    { x: -0.25, y: -0.1 },
+    // 3 
+    { x: -0.32, y: -0.33 },
+    // 4 
+    { x: 0.2, y: -0.3 },
+    // 5 
+    { x: 0.32, y: -0.32},
+    // 6 
+    { x: 0.22, y: -0.23},
+    // 7 
+    // { x: 0.05, y: 0.29 },
+    { x: -0.29, y: -0.29 },
+    // 8 
     { x: 0.2, y: 0.2 },
-    // 9 big
-    { x: -0.2, y: 0.2 }
+    // 9 
+    { x: -0.25, y: -0.25}
 ];
 
 let currentOutgoingAnchor = { x: 0.5, y: 0.5 }; 
@@ -91,23 +91,35 @@ function draw() {
     }
 
     let targetInScale = 0.6;
-    // let targetOutScale = 3;
-    // let targetOutScale = 1.2
-    let targetOutScale = 2.5 
+    let targetOutScale = 4.5
 
-    // transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement * 4);
-    // transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement);
-    transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*4);
-    // transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement*0.9);
+    // fast speed
+    // transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*4);
+    // transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement*0.5);
+
+    // middle speed
+    // transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*3);
+    // transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement*0.3);
+
+    // slow speed
+    transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*1.55);
+    transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement*0.25);
+    
 
     // out easing tests
-    transitionOutProgress += 0.04;
-    transitionOutProgress = constrain(transitionOutProgress, 1, 3);
-    transitionOutScale = transitionOutProgress * transitionOutProgress;
+    // transitionOutProgress += 0.04;
+    // transitionOutProgress = constrain(transitionOutProgress, 1, 3);
+    // transitionOutScale = transitionOutProgress * transitionOutProgress * targetOutScale/8;
 
 
+    // works with lerp
     currentOutgoingAnchor.x = lerp(currentOutgoingAnchor.x, targetOutgoingAnchor.x, transitionOutIncrement);
     currentOutgoingAnchor.y = lerp(currentOutgoingAnchor.y, targetOutgoingAnchor.y, transitionOutIncrement);
+
+
+    // works with other easing
+    // currentOutgoingAnchor.x = lerp(currentOutgoingAnchor.x, targetOutgoingAnchor.x, transitionOutIncrement/3);
+    // currentOutgoingAnchor.y = lerp(currentOutgoingAnchor.y, targetOutgoingAnchor.y, transitionOutIncrement/3);
 
     if (transitionInScale < targetInScale) {
         incomingRotation = lerp(incomingRotation, 0, 0.16);
@@ -117,13 +129,12 @@ function draw() {
 
 
     push();
-    imageMode(CENTER);
-    translate(
-        width / 2 - (currentOutgoingAnchor.x) * width * transitionOutScale,
-        height / 2 - (currentOutgoingAnchor.y) * height / aspectRatio * transitionOutScale
-    );
-    image(outgoingImage, 0, 0, width * transitionOutScale, (height / aspectRatio) * transitionOutScale);
-    // console.log("in: ", incomingIndex, "out: ", outgoingIndex);
+        imageMode(CENTER);
+        translate(
+            width / 2 - (currentOutgoingAnchor.x) * width * transitionOutScale,
+            height / 2 - (currentOutgoingAnchor.y) * height / aspectRatio * transitionOutScale
+        );
+        image(outgoingImage, 0, 0, width * transitionOutScale, (height / aspectRatio) * transitionOutScale);
     pop();
 
     push();
