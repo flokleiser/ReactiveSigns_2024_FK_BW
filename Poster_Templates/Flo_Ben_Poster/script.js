@@ -1,5 +1,3 @@
-//TODO: incomingimage 0 - 0.5, outgoingimage 0.5 - 1
-//TODO: lerp in and out of incoming and outgoing image
 //TODO: higher quality png
 
 let rotationHistory = [];
@@ -25,6 +23,8 @@ let incomingRotation = 0;
 let transitionInProgress
 let transitionOutProgress
 
+let currentOutgoingAnchor = { x: 0.5, y: 0.5 }; 
+
 let anchorPoints = [
     // 0
     { x: -0.34, y: 0 },
@@ -41,17 +41,12 @@ let anchorPoints = [
     // 6 
     { x: 0.22, y: -0.23},
     // 7 
-    // { x: 0.05, y: 0.29 },
     { x: -0.29, y: -0.29 },
     // 8 
     { x: 0.2, y: 0.2 },
     // 9 
     { x: -0.25, y: -0.25}
 ];
-
-let currentOutgoingAnchor = { x: 0.5, y: 0.5 }; 
-
-
 
 function preload() {
     for (let i = 0; i < 10; i++) {
@@ -66,7 +61,6 @@ function setup() {
 
 function draw() {
     background(poster.getCounter() % 2 === 0 ? 255 : 0);
-    // background(50);
 
     let outgoingIndex = poster.getCounter();
     let incomingIndex = (poster.getCounter() - 1 + images.length) % images.length;
@@ -93,33 +87,39 @@ function draw() {
     let targetInScale = 0.6;
     let targetOutScale = 4.5
 
-    // fast speed
+    //--------------- SCALE EASING -------------------
+
+    //fast speed
     transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*4);
     transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement*0.35);
 
-    // middle speed
+    //middle speed
     // transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*3);
     // transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement*0.3);
 
-    // slow speed
+    //slow speed
     // transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*1.55);
     // transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement*0.25);
     
-
-    // out easing tests
+    //out easing tests
     // transitionOutProgress += 0.04;
     // transitionOutProgress = constrain(transitionOutProgress, 1, 3);
     // transitionOutScale = transitionOutProgress * transitionOutProgress * targetOutScale/8;
 
+    //------------------------------------------------
+
+
+    //-------------- ANCHORPOINT EASING --------------
 
     // works with lerp
     currentOutgoingAnchor.x = lerp(currentOutgoingAnchor.x, targetOutgoingAnchor.x, transitionOutIncrement);
     currentOutgoingAnchor.y = lerp(currentOutgoingAnchor.y, targetOutgoingAnchor.y, transitionOutIncrement);
 
-
     // works with other easing
     // currentOutgoingAnchor.x = lerp(currentOutgoingAnchor.x, targetOutgoingAnchor.x, transitionOutIncrement/3);
     // currentOutgoingAnchor.y = lerp(currentOutgoingAnchor.y, targetOutgoingAnchor.y, transitionOutIncrement/3);
+
+    //------------------------------------------------
 
     if (transitionInScale < targetInScale) {
         incomingRotation = lerp(incomingRotation, 0, 0.16);
@@ -128,6 +128,7 @@ function draw() {
     }
 
 
+    // big number (previous, -1)
     push();
         imageMode(CENTER);
         translate(
@@ -137,6 +138,7 @@ function draw() {
         image(outgoingImage, 0, 0, width * transitionOutScale, (height / aspectRatio) * transitionOutScale);
     pop();
 
+    // small number (current)
     push();
         imageMode(CENTER);
         translate(width / 2, height / 2);

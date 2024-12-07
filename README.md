@@ -1,21 +1,18 @@
 # To-Do:
 
-- [x] Numbers rotate in
-- [x] Outgoing numbers correct scale
 - [ ] Viewer interaction
+- [ ] Higher quality pngs
+- [ ] Decide what to do about the pixelation
+
 
 ___
-
-
-<div style="display:flex;flex-direction:row;justify-content:center">
-<img src="/inspiration_gifs/showcase3.gif" width="275" style="padding-right:20px">
-<img src="/inspiration_gifs/ConceptAnimation.gif" width="275" style="padding-left:20px">
-</div>
+![](/inspiration_gifs/showcase3.gif)
 
 ___
 # Inspiration:
 
-### Bens gif:
+### Bens gifs:
+![](/inspiration_gifs/ConceptAnimation.gif)
 ![](/inspiration_gifs/test%20animation.gif)
 
 ### pinterest gifs:
@@ -24,15 +21,11 @@ ___
 ![](https://i.pinimg.com/originals/4e/b2/a8/4eb2a8f85aeb7e71155c86e85ce5a6df.gif)
 ![](https://i.pinimg.com/originals/70/57/fa/7057faca31205869802f5b3fe492f838.gif)
 ![](https://i.pinimg.com/originals/38/07/50/380750b95482946ee1ec1ac882e2a320.gif)
-![]()
-![]()
-![]()
-![]()
 
 ### Interaction:
-- area/square that is in focus, moving with the viewer
+- area/square that is in focus, moving with the viewer 
 ![](/inspiration_gifs/Mars%20Maiers.jpeg)
 
 
 <img src="/inspiration_gifs/ConceptAnimation.gif" width="300" style="display: inline-block; margin-right: 10px;">
-<img src="/inspiration_gifs/showcase.gif" width="300" style="display: inline-block;">
+<img src="/inspiration_gifs/showcase3.gif" width="300" style="display: inline-block;">
