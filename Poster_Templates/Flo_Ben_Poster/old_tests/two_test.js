@@ -25,11 +25,11 @@ function draw() {
   // background(50)
 
   if (poster.getCounter() !== previousCounter) {
-    transitionScale = 0;
+    transitionInScale = 0;
     previousCounter = poster.getCounter();
   }
 
-  transitionScale += 0.03;
+  transitionInScale += 0.03;
 
   push();
   imageMode(CENTER);
@@ -40,8 +40,8 @@ function draw() {
   // translate(width/2, anchorY);
   // translate(width / 2, height / 2);
 
-  let outgoingScale = 1 + transitionScale;
-  let incomingScale = transitionScale;
+  let outgoingScale = 1 + transitionInScale;
+  let incomingScale = transitionInScale;
   let outgoingIndex = (poster.getCounter() - 1 + 10) % 10; 
 
   //kinda cool weird effect?

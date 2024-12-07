@@ -64,21 +64,21 @@ stateTimer += 2
 
     //enter animation
   if (animationState === 0) {
-    transitionScale = lerp(transitionScale, 0.5, 0.5);
+    transitionInScale = lerp(transitionInScale, 0.5, 0.5);
     if (stateTimer > enterDuration) {
       animationState = 1;
       stateTimer = 0;
     }
     //middle animation
   } else if (animationState === 1) {
-    transitionScale = 1;
+    transitionInScale = 1;
     if (stateTimer > 15) { 
       animationState = 2;
       stateTimer = 0;
     }
     //exit animation
   } else if (animationState === 2) {
-    transitionScale = lerp(transitionScale, 2, 0.5);
+    transitionInScale = lerp(transitionInScale, 2, 0.5);
     if (stateTimer > exitDuration) {
       animationState = 0;
       stateTimer = 0;
@@ -94,7 +94,7 @@ stateTimer += 2
   translate(anchorX, anchorY);
 
   let incomingImage = images[poster.getCounter()];
-  image(incomingImage, 0, 0, width * transitionScale, (height / aspectRatio) * transitionScale);
+  image(incomingImage, 0, 0, width * transitionInScale, (height / aspectRatio) * transitionInScale);
 
   pop();
 

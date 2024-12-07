@@ -24,7 +24,7 @@ function draw() {
   // background(60)
 
   if (poster.getCounter() !== previousCounter) {
-    transitionScale = 0;
+    transitionInScale = 0;
     rotationAngle = -HALF_PI; 
     animationProgress = 0;   
     previousCounter = poster.getCounter();
@@ -32,10 +32,10 @@ function draw() {
 
   animationProgress = min(animationProgress + 0.03, 1);
   rotationAngle = lerp(-HALF_PI, 0, animationProgress); 
-  transitionScale += 0.03;
+  transitionInScale += 0.03;
 
-  let imgWidth = width * transitionScale;
-  let imgHeight = (height / aspectRatio) * transitionScale;
+  let imgWidth = width * transitionInScale;
+  let imgHeight = (height / aspectRatio) * transitionInScale;
 
   push();
 

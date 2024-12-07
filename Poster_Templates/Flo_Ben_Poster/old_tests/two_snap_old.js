@@ -28,16 +28,16 @@ function draw() {
       background(50)
 
     if (poster.getCounter() !== previousCounter) {
-        transitionScale = 0;
+        transitionInScale = 0;
         previousCounter = poster.getCounter();
     }
 
-    transitionScale += increment;
+    transitionInScale += transitionInIncrement;
 
-    if (transitionScale < 0.5) {
-        increment = 0.05;
+    if (transitionInScale < 0.5) {
+        transitionInIncrement = 0.05;
     } else {
-        increment = 0;
+        transitionInIncrement = 0;
         // increment = 1
     }
 
@@ -48,8 +48,8 @@ function draw() {
     let anchorY = height / 2
     translate(anchorX, anchorY);
 
-    let outgoingScale = transitionScale;
-    let incomingScale= transitionScale + 1
+    let outgoingScale = transitionInScale;
+    let incomingScale= transitionInScale + 1
 
     // let incomingImage = images[poster.getCounter()];
     let incomingImage = images[poster.getCounter() - 1];

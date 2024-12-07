@@ -23,11 +23,11 @@ function draw() {
   background(poster.getCounter() % 2 === 0 ? 255 : 0);
 
   if (poster.getCounter() !== previousCounter) {
-    transitionScale = 0;
+    transitionInScale = 0;
     previousCounter = poster.getCounter();
   }
 
-  transitionScale += increment
+  transitionInScale += transitionInIncrement
   // if (transitionScale < 1) {
   //   increment = 0.08
   // } else {
@@ -42,7 +42,7 @@ function draw() {
   let anchorY = height / 2 + dynamicOffsetY(poster.getCounter());
   translate(anchorX, anchorY);
 
-  let incomingScale = transitionScale;
+  let incomingScale = transitionInScale;
   // if (transitionScale < 1) {
   //   transitionScale += 0.05;
   //   console.log('test')

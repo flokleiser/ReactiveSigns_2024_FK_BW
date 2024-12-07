@@ -5,12 +5,12 @@ let rotationHistory = [];
 let images = [];
 let font;
 let aspectRatio = 1.375;
-let transitionInScale = 0;
+let transitionScale = 0;
 let transitionOutScale = 0.5
 
 
 let previousCounter = -1;
-let transitionInIncrement = 0.05;
+let increment = 0.05;
 let transitionOutIncrement = 0.09
 let transitionFlag = true;
 
@@ -62,23 +62,39 @@ function draw() {
         transitionInScale = 0;
         transitionOutScale = 0.5
         //this stupid thing fixes the size increase
-        transitionInIncrement = 0.05;
-        transitionOutIncrement = 0.1;
+        transitionInIncrement = 0.02;
+        transitionOutIncrement = 0.09;
         previousCounter = poster.getCounter();
     }
 
-    let targetScale = 0.6
+    let targetInScale = 0.6
+    let targetOutScale = 3 
 
     transitionInScale += transitionInIncrement;
     transitionOutScale += transitionOutIncrement
 
-    if (transitionInScale < 0.6) {
-        transitionInIncrement = 0.05;
-        transitionOutIncrement = 0.1
-    } else {
-        transitionInIncrement = 0;
-        transitionOutIncrement = 0
+    // if (transitionScale < 0.6) {
+    //     increment = 0.05;
+    //     transitionOutIncrement = 0.1
+    // } else {
+    //     increment = 0;
+    //     transitionOutIncrement = 0
+    // }
+    if (transitionInScale < targetInScale) {
+        lerp(transitionInScale, targetInScale, 0.05)
     }
+    else {
+        transitionInScale = targetInScale;
+    }
+
+
+    if (transitionOutScale < targetOutScale) {
+        lerp(transitionOutScale, targetOutScale, 0.05)
+    }
+    else {
+        transitionOutScale = targetOutScale
+    }
+
 
     push();
         imageMode(CENTER);
@@ -98,10 +114,3 @@ function draw() {
 function windowScaled() {
     textSize(10 * poster.vw);
 }
-
-
-/*
-   let difference = outgoingScale - endpoints[0].endScale 
-   difference *= 0.1;
-    outgoingScale += difference;
-*/
