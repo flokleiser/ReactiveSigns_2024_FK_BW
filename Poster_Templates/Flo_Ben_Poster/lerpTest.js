@@ -5,7 +5,6 @@ let rotationHistory = [];
 let images = [];
 let font;
 let aspectRatio = 1.375;
-let transitionScale = 0;
 let transitionOutScale = 0.5
 
 
@@ -16,6 +15,13 @@ let transitionFlag = true;
 
 let incomingImage;
 let outgoingImage;
+
+let incomingRotation
+let targetRotation
+let finalRotation
+
+let startInScale
+let startOutScale
 
 // let transitionEndpoints = {
 //     no1: {endX: 0.5, endY: 0.5, endScale: 5.5, endRotation: 0.01},
@@ -35,81 +41,68 @@ function preload() {
     }
 }
 
+
 function setup() {
     createCanvas(poster.getWindowWidth(), poster.getWindowHeight());
     poster.setup(this, "models/movenet/model.json");
-
-    // incomingImage = images[0];
-    // outgoingImage = images[1]
 }
 
+
 function draw() {
-    // background(poster.getCounter() % 2 === 0 ? 0 : 255);
-    // background(poster.getCounter() % 2 === 0 ? 255 : 0);
-     background(50)
+    background(50);
 
-     // first assigning the images
-     incomingImage = images[poster.getCounter()];
-     outgoingImage = images[poster.getCounter() - 1];
-     if (outgoingImage === undefined) {
-         outgoingImage = images[9];
-     }
-
-
-
+    outgoingImage = images[poster.getCounter()];
+    incomingImage = images[poster.getCounter() - 1];
+    if (incomingImage === undefined) {
+        incomingImage = images[9];
+    }
 
     if (poster.getCounter() !== previousCounter) {
         transitionInScale = 0;
-        transitionOutScale = 0.5
-        //this stupid thing fixes the size increase
+        transitionOutScale = 0.5;
         transitionInIncrement = 0.02;
         transitionOutIncrement = 0.09;
+
+        incomingRotation = PI/2;
         previousCounter = poster.getCounter();
     }
 
-    let targetInScale = 0.6
-    let targetOutScale = 3 
+    let targetInScale = 0.6;
+    let targetOutScale = 3;
 
-    transitionInScale += transitionInIncrement;
-    transitionOutScale += transitionOutIncrement
+    transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*4);
+    transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement);
+    // transitionInScale = min(transitionInScale + transitionInIncrement, targetInScale);
+    // transitionOutScale = min(transitionOutScale + transitionOutIncrement, targetOutScale);
 
-    // if (transitionScale < 0.6) {
-    //     increment = 0.05;
-    //     transitionOutIncrement = 0.1
-    // } else {
-    //     increment = 0;
-    //     transitionOutIncrement = 0
-    // }
     if (transitionInScale < targetInScale) {
-        lerp(transitionInScale, targetInScale, 0.05)
+        incomingRotation = lerp(incomingRotation, 0, 0.16);
+    } else {
+        incomingRotation = 0;
     }
-    else {
-        transitionInScale = targetInScale;
-    }
-
-
-    if (transitionOutScale < targetOutScale) {
-        lerp(transitionOutScale, targetOutScale, 0.05)
-    }
-    else {
-        transitionOutScale = targetOutScale
-    }
-
 
     push();
-        imageMode(CENTER);
-        // let anchorX = width / 2
-        // let anchorY = height / 2
-        // translate(anchorX, anchorY);
-        translate(width / 2, height / 2);
-        let outgoingScale = transitionInScale;
-        let incomingScale= transitionOutScale
-        image(incomingImage, 0, 0, width * incomingScale, (height / aspectRatio) * incomingScale);
-        image(outgoingImage, 0, 0, width * outgoingScale, (height / aspectRatio) * outgoingScale);
+    let incomingScale = transitionInScale;
+    let outgoingScale = transitionOutScale;
+
+    push();
+    imageMode(CENTER);
+    translate(width / 2, height / 2);
+    image(outgoingImage, 0, 0, width * outgoingScale, (height / aspectRatio) * outgoingScale);
+    pop();
+
+    push();
+    imageMode(CENTER);
+    translate(width / 2, height / 2);
+    rotate(-incomingRotation);
+    image(incomingImage, 0, 0, width * incomingScale, (height / aspectRatio) * incomingScale);
+    pop();
+
     pop();
 
     poster.posterTasks();
 }
+
 
 function windowScaled() {
     textSize(10 * poster.vw);

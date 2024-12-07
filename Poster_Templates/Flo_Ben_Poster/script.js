@@ -14,8 +14,8 @@ let transitionInIncrement = 0.05;
 let transitionOutIncrement = 0.09
 let transitionFlag = true;
 
-let incomingImage;
 let outgoingImage;
+let incomingImage;
 
 // let transitionEndpoints = {
 //     no1: {endX: 0.5, endY: 0.5, endScale: 5.5, endRotation: 0.01},
@@ -49,10 +49,10 @@ function draw() {
      background(50)
 
      // first assigning the images
-     incomingImage = images[poster.getCounter()];
-     outgoingImage = images[poster.getCounter() - 1];
-     if (outgoingImage === undefined) {
-         outgoingImage = images[9];
+     outgoingImage = images[poster.getCounter()];
+     incomingImage = images[poster.getCounter() - 1];
+     if (incomingImage === undefined) {
+         incomingImage = images[9];
      }
 
 
@@ -88,8 +88,8 @@ function draw() {
         translate(width / 2, height / 2);
         let outgoingScale = transitionInScale;
         let incomingScale= transitionOutScale
-        image(incomingImage, 0, 0, width * incomingScale, (height / aspectRatio) * incomingScale);
-        image(outgoingImage, 0, 0, width * outgoingScale, (height / aspectRatio) * outgoingScale);
+        image(outgoingImage, 0, 0, width * incomingScale, (height / aspectRatio) * incomingScale);
+        image(incomingImage, 0, 0, width * outgoingScale, (height / aspectRatio) * outgoingScale);
     pop();
 
     poster.posterTasks();
