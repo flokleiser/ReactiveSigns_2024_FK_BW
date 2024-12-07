@@ -1,34 +1,20 @@
 # To-Do:
 
-- [ ] Numbers "rotate" in
-- [ ] Outgoing numbers correct scale
-
+- [x] Numbers rotate in
+- [x] Outgoing numbers correct scale
+- [ ] Viewer interaction
 
 ___
-# Questions for Luke:
 
-#### Keypress related:
-- [ ] How to stop Poster_Control.js from preventing keyboard/mouse inputs
-- [ ] How to disable individual things from Poster_Control.js (like the mouse making it fullscreen)
 
-#### Counter related:
-- [ ] Disable counter?
-- [ ] make counter slower?
-- [ ] Is it intentional that the counter starts from 0
 
-#### General:
-- [ ] Clarification on how its gonna look (countdown or 150)
+<img src="/inspiration_gifs/ConceptAnimation.gif" width="300" style="display: inline-block; margin-right: 10px;">
+<img src="/inspiration_gifs/showcase.gif" width="300" style="display: inline-block;">
 
 ___
 # Inspiration:
 
-### Interaction:
-- area/square that is in focus, moving with the viewer
-![](/inspiration_gifs/Mars%20Maiers.jpeg)
-
-
 ### Bens gif:
-![](/inspiration_gifs/ConceptAnimation.gif)
 ![](/inspiration_gifs/test%20animation.gif)
 
 ### pinterest gifs:
@@ -41,3 +27,7 @@ ___
 ![]()
 ![]()
 ![]()
+
+### Interaction:
+- area/square that is in focus, moving with the viewer
+![](/inspiration_gifs/Mars%20Maiers.jpeg)
