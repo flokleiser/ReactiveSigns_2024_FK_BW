@@ -1,5 +1,3 @@
-//TODO: maybe change 0? 
-
 let rotationHistory = [];
 let images = [];
 let font;
@@ -19,6 +17,7 @@ let transitionOutScale = 0.6;
 let transitionInIncrement = 0.06;
 let transitionOutIncrement = 0.09;
 let incomingRotation = 0;
+let outgoingRotation = 0;
 
 let transitionInProgress
 let transitionOutProgress
@@ -27,25 +26,25 @@ let currentOutgoingAnchor = { x: 0.5, y: 0.5 };
 
 let anchorPoints = [
     // 0
-    { x: -0.34, y: 0 },
+    { x: 0, y: 0.23 },
     // 1
-    { x: 0.25, y: 0.2 },
+    { x: 0.05, y: -0.2 },
     // 2 
-    { x: -0.25, y: -0.1 },
+    { x: 0, y: -0.23 },
     // 3 
-    { x: -0.32, y: -0.33 },
+    { x: 0.4, y: -0.2},
     // 4 
-    { x: 0.2, y: -0.3 },
+    { x: 0.4, y: 0.15},
     // 5 
-    { x: 0.32, y: -0.32},
+    { x: 0.4, y: 0.23},
     // 6 
-    { x: 0.22, y: -0.23},
+    { x: 0.2, y: 0.23},
     // 7 
-    { x: -0.29, y: -0.29 },
+    { x: -0.35, y: -0 },
     // 8 
-    { x: 0.2, y: 0.2 },
+    { x: -0.2, y: 0.15 },
     // 9 
-    { x: -0.25, y: -0.25}
+    { x: -0.25, y: -0.2}
 ];
 
 function preload() {
@@ -77,6 +76,7 @@ function draw() {
         transitionOutIncrement = 0.2;
 
         incomingRotation = PI / 2; 
+        outgoingRotation = 0;
         currentOutgoingAnchor = { x: 0, y: 0};
         previousCounter = poster.getCounter();
 
@@ -84,11 +84,13 @@ function draw() {
         transitionOutProgress = 0; 
     }
 
-    let targetInScale = 1.7;
-    let targetOutScale = 4.5;
+    let targetInScale = 0.6;
+    // let targetOutScale = 4.5
+    let targetOutScale = 2.5
 
     transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*4);
     transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement*0.35);
+
     currentOutgoingAnchor.x = lerp(currentOutgoingAnchor.x, targetOutgoingAnchor.x, transitionOutIncrement);
     currentOutgoingAnchor.y = lerp(currentOutgoingAnchor.y, targetOutgoingAnchor.y, transitionOutIncrement);
 
@@ -98,12 +100,19 @@ function draw() {
         incomingRotation = 0;
     }
 
+    if (transitionOutScale < targetOutScale) {
+        outgoingRotation = lerp(outgoingRotation, PI / 2, 0.16);
+    } else {
+        outgoingRotation = 0
+    }
+
     push();
         imageMode(CENTER);
         translate(
             width / 2 - (currentOutgoingAnchor.x) * width * transitionOutScale,
             height / 2 - (currentOutgoingAnchor.y) * height / aspectRatio * transitionOutScale
         );
+        rotate(outgoingRotation);
         image(outgoingImage, 0, 0, width * transitionOutScale, (height / aspectRatio) * transitionOutScale);
     pop();
 

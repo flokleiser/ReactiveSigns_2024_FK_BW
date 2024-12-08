@@ -1,5 +1,3 @@
-//TODO: higher quality png
-
 let rotationHistory = [];
 let images = [];
 let font;
@@ -28,11 +26,11 @@ let currentOutgoingAnchor = { x: 0.5, y: 0.5 };
 
 let anchorPoints = [
     // 0
-    { x: 0, y: 0.23 },
+    { x: 0.015, y: 0.23 },
     // 1
     { x: 0.05, y: -0.2 },
     // 2 
-    { x: 0, y: -0.23 },
+    { x: -0.008, y: -0.219 },
     // 3 
     { x: 0.4, y: -0.2},
     // 4 
@@ -87,8 +85,8 @@ function draw() {
     }
 
     let targetInScale = 0.6;
-    // let targetOutScale = 4.5
-    let targetOutScale = 2.5
+    let targetOutScale = 5.5;
+    // let targetOutScale = 2.5
 
     transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*4);
     transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement*0.35);
