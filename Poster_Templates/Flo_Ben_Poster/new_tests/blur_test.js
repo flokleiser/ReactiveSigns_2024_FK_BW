@@ -1,5 +1,6 @@
 //TODO: higher quality png
-//TODO: figure out how interaction works, something with "poster.posNormal.x" etc
+//TODO: something with blur?
+//drawingContext.filter = 'blur(10px)'; --> much faster than filter(BLUR)
 
 let rotationHistory = [];
 let images = [];
@@ -23,6 +24,13 @@ let incomingRotation = 0;
 
 let transitionInProgress
 let transitionOutProgress
+
+let mappedViewerX 
+let mappedViewerY
+let originalViewerX 
+let originalViewerY
+
+let circleRadius
 
 let currentOutgoingAnchor = { x: 0.5, y: 0.5 }; 
 
@@ -67,6 +75,77 @@ function setup() {
 function draw() {
     background(poster.getCounter() % 2 === 0 ? 255 : 0);
 
+    displayNumbers()
+
+    let blurAmount = poster.posNormal.x * 100
+
+    drawingContext.save();
+
+    if (originalViewerX < 0.5) {
+        drawingContext.filter = 'blur(' + (blurAmount) + 'px)';
+    } else if (originalViewerX> 0.5) {
+        drawingContext.filter = 'blur(' + (100 - blurAmount) + 'px)';
+    } if (mappedViewerX > width || mappedViewerX < 0) {
+        blurAmount = 0
+    }
+
+
+    displayNumbers()
+
+    drawingContext.restore();
+
+    displayText();
+    viewerInteraction()
+
+    poster.posterTasks();
+}
+
+function windowScaled() {
+    textSize(10 * poster.vw);
+}
+
+function viewerInteraction() {
+
+    originalViewerX = poster.posNormal.x
+    originalViewerY = poster.posNormal.y
+
+    mappedViewerX = map(poster.posNormal.x,0,1,0,width)
+    mappedViewerY = map(poster.posNormal.y,0,1,0,height) 
+
+    if (poster.posNormal.x < 0.5) {
+        circleRadius = poster.posNormal.x * 2500 
+    } else {
+        circleRadius = (1 - poster.posNormal.x) * 2500 
+    }
+
+    push();
+        blendMode(DIFFERENCE);
+        fill(255)
+        circle(mappedViewerX,height/2, circleRadius);
+        blendMode(BLEND);
+    pop();
+}
+
+function displayText() {
+    push();
+        blendMode(DIFFERENCE)
+        fill(255)
+        textSize(4.5*poster.vw);
+        text("this number is poster.posNormal.x", width / 3.5, height / 25);
+        textSize(20*poster.vw);
+        text(`${poster.posNormal.x.toFixed(4)}`, width / 2.8, height / 7);
+        textSize(12*poster.vw);
+        text("top text", width / 1.87, height / 4.85);
+        textSize(7*poster.vw);
+        text("bottom text", width / 15, height / 1.2);
+        text("me when the when", width / 15, height / 1.15);
+        blendMode(BLEND);
+    pop();
+
+
+}
+
+function displayNumbers() {
     let outgoingIndex = poster.getCounter();
     let incomingIndex = (poster.getCounter() - 1 + images.length) % images.length;
 
@@ -121,23 +200,4 @@ function draw() {
         rotate(-incomingRotation);
         image(incomingImage, 0, 0, width * transitionInScale, (height / aspectRatio) * transitionInScale);
     pop();
-
-    push();
-        blendMode(DIFFERENCE)
-        fill(255)
-        textSize(20*poster.vw);
-        text(`${poster.posNormal.x.toFixed(4)}`, width / 2.8, height / 7);
-        textSize(12*poster.vw);
-        text("top text", width / 1.87, height / 4.85);
-        textSize(7*poster.vw);
-        text("bottom text", width / 15, height / 1.2);
-        text("me when the when", width / 15, height / 1.15);
-        blendMode(BLEND);
-    pop();
-
-    poster.posterTasks();
-}
-
-function windowScaled() {
-    textSize(10 * poster.vw);
 }
