@@ -27,5 +27,6 @@ ___
 ![](/inspiration_gifs/Mars%20Maiers.jpeg)
 
 
+### Comparison:
 <img src="/inspiration_gifs/ConceptAnimation.gif" width="300" style="display: inline-block; margin-right: 10px;">
 <img src="/inspiration_gifs/showcase3.gif" width="300" style="display: inline-block;">

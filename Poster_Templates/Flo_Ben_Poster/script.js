@@ -154,6 +154,7 @@ function draw() {
     }
 
 
+    //here we draw the numbers, i put them each in a push() and pop() because otherwise lukes fps display and stuff rotates too
     //big number (smallnumber - 1)
     //we draw this first so that the small number gets drawn over it
     push();
