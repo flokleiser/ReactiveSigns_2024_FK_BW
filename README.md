@@ -8,6 +8,12 @@
 ___
 ![](/inspiration_gifs/showcase3.gif)
 
+### Comparison:
+<div style="display:flex;flex-direction:row;justify-content:center">
+<img src="/inspiration_gifs/ConceptAnimation.gif" width="300" style="margin-right: 10px;">
+<img src="/inspiration_gifs/showcase3.gif" width="300" style="margin-left: 10px;">
+</div>
+
 ___
 # Inspiration:
 
@@ -25,8 +31,3 @@ ___
 ### Interaction:
 - area/square that is in focus, moving with the viewer 
 ![](/inspiration_gifs/Mars%20Maiers.jpeg)
-
-
-### Comparison:
-<img src="/inspiration_gifs/ConceptAnimation.gif" width="300" style="display: inline-block; margin-right: 10px;">
-<img src="/inspiration_gifs/showcase3.gif" width="300" style="display: inline-block;">
