@@ -35,12 +35,13 @@ let originalViewerY
 let blurAmount
 
 let currentOutgoingAnchor = { x: 0.5, y: 0.5 }; 
+// let currentOutgoingAnchor = { x: 0, y: 0}; 
 let currentIncomingAnchor = { x: 0, y: 0 }; 
 
 let totalDuration
 let timePassed
 
-let incomingAnchorPoints = [
+let smallAnchorPoints = [
     //0
     { x: 0, y: 0 },
     //1
@@ -61,7 +62,7 @@ let incomingAnchorPoints = [
     //8
     { x: 0, y: 0 },
     //9
-    { x: 0, y: 0 },
+    { x: -0, y: 0 },
 ]
 
 let anchorPoints = [
@@ -71,7 +72,6 @@ let anchorPoints = [
     { x: 0, y: 0 },
     //2
     { x: 0, y: 0 },
-    // { x: 0, y: 0 },
     //3
     { x: 0, y: 0 },
     //4
@@ -85,7 +85,7 @@ let anchorPoints = [
     //8
     { x: 0, y: 0 },
     //9
-    { x: 0, y: 0 },
+    { x: 0, y: -0.2 },
 ];
 
 function preload() {
@@ -142,7 +142,6 @@ function displayNumbers() {
     incomingImage = images[incomingIndex];
 
     let targetOutgoingAnchor = anchorPoints[outgoingIndex];
-    let targetIncomingAnchor = incomingAnchorPoints[incomingIndex];
 
     if (poster.getCounter() !== previousCounter) {
         transitionInScale = 0;
@@ -151,15 +150,10 @@ function displayNumbers() {
         transitionOutIncrement = 0.2;
 
         incomingRotation = PI*1.5; 
-
-
-        console.log('in: ',currentIncomingAnchor,' \n out: ',currentOutgoingAnchor)
-
-        currentIncomingAnchor = { x: 0, y: 0};
-        currentOutgoingAnchor = { x: 0, y: 0};
+        currentOutgoingAnchor.x = smallAnchorPoints[outgoingIndex].x;
+        currentOutgoingAnchor.y = smallAnchorPoints[outgoingIndex].y
 
         timePassed = 0
-
         previousCounter = poster.getCounter();
     }
 
@@ -173,13 +167,10 @@ function displayNumbers() {
         const t = timePassed / totalDuration;
         transitionInScale = lerp(transitionInScale, targetInScale, easeInCubic(t));
         transitionOutScale = lerp(transitionOutScale, targetOutScale, easeInCubic(t));
+
+        currentOutgoingAnchor.x = lerp(currentOutgoingAnchor.x, targetOutgoingAnchor.x, easeInCubic(t));
+        currentOutgoingAnchor.y = lerp(currentOutgoingAnchor.y, targetOutgoingAnchor.y, easeInCubic(t));
     }
-
-    currentOutgoingAnchor.x = lerp(incomingAnchorPoints[outgoingIndex].x, incomingAnchorPoints[outgoingIndex].x, transitionOutIncrement);
-    currentOutgoingAnchor.y = lerp(incomingAnchorPoints[outgoingIndex].y, incomingAnchorPoints[outgoingIndex].y, transitionOutIncrement);
-    incomingAnchorPoints[incomingIndex]
-
-    currentIncomingAnchor = incomingAnchorPoints[incomingIndex];
 
     if (transitionInScale < targetInScale) {
         incomingRotation = lerp(incomingRotation, 0, 0.16);
@@ -189,19 +180,22 @@ function displayNumbers() {
 
     push();
         imageMode(CENTER);
-        translate(
-            width / 2 - (currentOutgoingAnchor.x) * width * transitionOutScale,
-            height / 2 - (currentOutgoingAnchor.y) * height / aspectRatio * transitionOutScale
-        );
+            translate(
+                width / 2 - (currentOutgoingAnchor.x) * width * transitionOutScale,
+                height / 2 - (currentOutgoingAnchor.y) * height / aspectRatio * transitionOutScale
+            );
         image(outgoingImage, 0, 0, width * transitionOutScale, (height / aspectRatio) * transitionOutScale);
     pop();
 
     push();
         imageMode(CENTER);
-        translate(
-            width / 2 - (currentIncomingAnchor.x) * width * transitionInScale,
-            height / 2 - (currentIncomingAnchor.y) * height / aspectRatio * transitionInScale
-        );
+        //this is very hacky but i dont care
+        if (outgoingIndex === 3) {
+           translate(width/2, height/2 - 4*poster.vh) 
+        } else {
+            translate(width/2, height/2)
+        }
+        // translate(width/2, height/2)
         rotate(-incomingRotation);
         image(incomingImage, 0, 0, width * transitionInScale, (height / aspectRatio) * transitionInScale);
     pop();

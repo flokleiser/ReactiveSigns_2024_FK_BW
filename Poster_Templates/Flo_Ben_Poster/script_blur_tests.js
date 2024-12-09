@@ -32,7 +32,7 @@ let blurAmount
 let currentOutgoingAnchor = { x: 0.5, y: 0.5 }; 
 let currentIncomingAnchor = { x: 0, y: 0 }; 
 
-let incomingAnchorPoints = [
+let smallAnchorPoints = [
     //0
     { x: 0, y: 0 },
     //1
@@ -153,7 +153,7 @@ function displayNumbers() {
     incomingImage = images[incomingIndex];
 
     let targetOutgoingAnchor = anchorPoints[outgoingIndex];
-    let targetIncomingAnchor = incomingAnchorPoints[incomingIndex];
+    let targetIncomingAnchor = smallAnchorPoints[incomingIndex];
 
     if (poster.getCounter() !== previousCounter) {
         transitionInScale = 0;
