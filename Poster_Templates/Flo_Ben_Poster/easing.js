@@ -46,8 +46,8 @@ let incomingAnchorPoints = [
     //1
     { x: 0, y: 0 },
     //2
-    // { x: 0, y: 0.035 },
-    { x: 0, y: 0 },
+    { x: 0, y: 0.035 },
+    // { x: 0, y: 0 },
     //3
     { x: 0, y: 0 },
     //4
@@ -70,8 +70,8 @@ let anchorPoints = [
     //1
     { x: 0, y: 0 },
     //2
-    // { x: 0, y: 0.035 },
     { x: 0, y: 0 },
+    // { x: 0, y: 0 },
     //3
     { x: 0, y: 0 },
     //4
@@ -107,9 +107,7 @@ function draw() {
     background(50)
 
     viewerInteraction();
-
-
-    blurAmount = poster.posNormal.x * 90 
+    blurAmount = poster.posNormal.x * 50 
 
     drawingContext.save();
 
@@ -117,17 +115,16 @@ function draw() {
     const centerEnd = width / 1.5;
 
     if (mappedViewerX < centerStart) {
-        blurAmount = map(originalViewerX * width, 0, centerStart, 85, 0);
+        blurAmount = map(originalViewerX * width, 0, centerStart, 50, 0);
     } else if (originalViewerX * width > centerEnd) {
-        blurAmount = map(originalViewerX * width, centerEnd, width, 0, 85);
+        blurAmount = map(originalViewerX * width, centerEnd, width, 0, 50);
     } else {
         blurAmount = 0;
     }
 
-
     // drawingContext.filter = `blur(${blurAmount}px)`;
-
     displayNumbers(); 
+
     drawingContext.restore();
 
     poster.posterTasks();
@@ -154,11 +151,12 @@ function displayNumbers() {
         transitionOutIncrement = 0.2;
 
         incomingRotation = PI*1.5; 
+
+
+        console.log('in: ',currentIncomingAnchor,' \n out: ',currentOutgoingAnchor)
+
         currentIncomingAnchor = { x: 0, y: 0};
         currentOutgoingAnchor = { x: 0, y: 0};
-
-        transitionInProgress = 0; 
-        transitionOutProgress = 0; 
 
         timePassed = 0
 
@@ -177,11 +175,11 @@ function displayNumbers() {
         transitionOutScale = lerp(transitionOutScale, targetOutScale, easeInCubic(t));
     }
 
-    currentOutgoingAnchor.x = lerp(currentOutgoingAnchor.x, targetOutgoingAnchor.x, transitionOutIncrement);
-    currentOutgoingAnchor.y = lerp(currentOutgoingAnchor.y, targetOutgoingAnchor.y, transitionOutIncrement);
+    currentOutgoingAnchor.x = lerp(incomingAnchorPoints[outgoingIndex].x, incomingAnchorPoints[outgoingIndex].x, transitionOutIncrement);
+    currentOutgoingAnchor.y = lerp(incomingAnchorPoints[outgoingIndex].y, incomingAnchorPoints[outgoingIndex].y, transitionOutIncrement);
+    incomingAnchorPoints[incomingIndex]
 
-    currentIncomingAnchor.x = lerp(currentIncomingAnchor.x, targetIncomingAnchor.x, transitionInIncrement*5);
-    currentIncomingAnchor.y = lerp(currentIncomingAnchor.y, targetIncomingAnchor.y, transitionInIncrement*5);
+    currentIncomingAnchor = incomingAnchorPoints[incomingIndex];
 
     if (transitionInScale < targetInScale) {
         incomingRotation = lerp(incomingRotation, 0, 0.16);
@@ -209,6 +207,7 @@ function displayNumbers() {
     pop();
 }
 
+//calculations for the x postitions etc
 function viewerInteraction() {
     originalViewerX = poster.posNormal.x
     originalViewerY = poster.posNormal.y
@@ -217,14 +216,13 @@ function viewerInteraction() {
     mappedViewerY = map(poster.posNormal.y,0,1,0,height) 
 }
 
+//easing tests
 function easeInCubic(t) {
     return t * t * t;
 }
-
 function easeOutCubic(t) {
     return 1 - Math.pow(1 - t, 3);
 }   
-
 function easeInOutCubic(t) {
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
