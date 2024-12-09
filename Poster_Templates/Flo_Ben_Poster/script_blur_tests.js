@@ -149,15 +149,13 @@ function displayNumbers() {
         transitionOutProgress = 0; 
     }
 
-    let targetInScale = 1.67;
-    // let targetInScale = 1.7;
+    let targetInScale = 1.71;
     let targetOutScale = 4.5;
 
-    transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*4);
+    // transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*4);
+    transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*2.8);
     transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement*0.35);
 
-    // currentOutgoingAnchor.x = lerp(currentOutgoingAnchor.x, targetOutgoingAnchor.x, transitionOutIncrement/2);
-    // currentOutgoingAnchor.y = lerp(currentOutgoingAnchor.y, targetOutgoingAnchor.y, transitionOutIncrement/2);
     currentOutgoingAnchor.x = lerp(currentOutgoingAnchor.x, targetOutgoingAnchor.x, transitionOutIncrement);
     currentOutgoingAnchor.y = lerp(currentOutgoingAnchor.y, targetOutgoingAnchor.y, transitionOutIncrement);
 
