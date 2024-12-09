@@ -57,19 +57,21 @@ let incomingAnchorPoints = [
 
 let anchorPoints = [
     // 0
-    { x: -0.34, y: 0 },
+    { x: -0.32, y: -0.1 },
     // 1
-    { x: 0.25, y: 0.2 },
+    { x: 0.27, y: 0.2 },
     // 2 
     { x: -0.25, y: -0.1 },
     // 3 
     { x: -0.35, y: -0.29 },
+    // { x: 0.2, y: 0.34},
     // 4 
     { x: 0.2, y: -0.3 },
     // 5 
     { x: 0.33, y: -0.325},
     // 6 
-    { x: 0.22, y: -0.23},
+    { x: 0.27, y: -0.25},
+    // { x: 0.25, y: -0.15},
     // 7 
     { x: -0.29, y: -0.29 },
     // 8 
@@ -91,6 +93,7 @@ function setup() {
 
 function draw() {
     background(poster.getCounter() % 2 === 0 ? 255 : 0);
+    // background(50)
 
     viewerInteraction();
 
@@ -103,10 +106,8 @@ function draw() {
     const centerEnd = width / 1.5;
 
     if (mappedViewerX < centerStart) {
-        //original value
         blurAmount = map(originalViewerX * width, 0, centerStart, 85, 0);
     } else if (originalViewerX * width > centerEnd) {
-        //original value
         blurAmount = map(originalViewerX * width, centerEnd, width, 0, 85);
     } else {
         blurAmount = 0;
@@ -149,15 +150,13 @@ function displayNumbers() {
         transitionOutProgress = 0; 
     }
 
-    let targetInScale = 1.67;
-    // let targetInScale = 1.7;
-    let targetOutScale = 4.5;
+    let targetInScale = 1.7;
+    let targetOutScale = 4.6;
 
-    transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*4);
+    // transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*4.25);
+    transitionInScale = lerp(transitionInScale, targetInScale, transitionInIncrement*3.25);
     transitionOutScale = lerp(transitionOutScale, targetOutScale, transitionOutIncrement*0.35);
 
-    // currentOutgoingAnchor.x = lerp(currentOutgoingAnchor.x, targetOutgoingAnchor.x, transitionOutIncrement/2);
-    // currentOutgoingAnchor.y = lerp(currentOutgoingAnchor.y, targetOutgoingAnchor.y, transitionOutIncrement/2);
     currentOutgoingAnchor.x = lerp(currentOutgoingAnchor.x, targetOutgoingAnchor.x, transitionOutIncrement);
     currentOutgoingAnchor.y = lerp(currentOutgoingAnchor.y, targetOutgoingAnchor.y, transitionOutIncrement);
 

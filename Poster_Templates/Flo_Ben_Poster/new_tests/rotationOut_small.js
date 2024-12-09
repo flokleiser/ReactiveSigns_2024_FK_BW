@@ -101,7 +101,7 @@ function draw() {
     }
 
     if (transitionOutScale < targetOutScale) {
-        outgoingRotation = lerp(outgoingRotation, PI / 2, 0.16);
+        outgoingRotation = lerp(outgoingRotation, PI /1, 0.16);
     } else {
         outgoingRotation = 0
     }
