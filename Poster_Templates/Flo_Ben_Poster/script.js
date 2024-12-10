@@ -125,10 +125,6 @@ function displayNumbers() {
     let outgoingIndex = poster.getCounter();
     let incomingIndex = (poster.getCounter() - 1 + images.length) % images.length;
 
-    if (incomingIndex === undefined) {
-        incomingIndex = 9;
-    }
-
     outgoingImage = images[outgoingIndex];
     incomingImage = images[incomingIndex];
 
@@ -140,7 +136,8 @@ function displayNumbers() {
         transitionInIncrement = 0.03;
         transitionOutIncrement = 0.2;
 
-        incomingRotation = PI*1.5; 
+        // incomingRotation = PI*1.5; 
+        incomingRotation = PI/4; 
         currentOutgoingAnchor.x = smallAnchorPoints[outgoingIndex].x;
         currentOutgoingAnchor.y = smallAnchorPoints[outgoingIndex].y
 
@@ -155,17 +152,20 @@ function displayNumbers() {
     if (timePassed < totalDuration) {
         const t = timePassed / totalDuration;
         let t2 = 0;
+        let delay = 0.3
 
-        if (timePassed < 0.3) {
+        if (timePassed < delay) {
             transitionInScale = 0.000001; 
             t2 = 0.0;
             timePassed2 = 0;
         } else {
-            t2 = map(timePassed, 0.3, totalDuration, 0, 1);
+            t2 = map(timePassed, delay, totalDuration, 0, 1);
             transitionInScale = lerp(transitionInScale, targetInScale, easeInCubic(t2));
 
             if (t2 <= 0.9) {
-                incomingRotation = lerp(incomingRotation, 0, 0.275);
+                // incomingRotation = lerp(incomingRotation, 0, 0.275);
+                incomingRotation = lerp(incomingRotation, 0, easeInOutCubic(t2));
+                console.log(incomingRotation.toFixed(2))
             } else {
                 incomingRotation = 0;
             }
@@ -204,7 +204,16 @@ function displayDebugInfo() {
         blendMode(DIFFERENCE)
         fill(255)
         textSize(4.5*poster.vw);
-        text(`Blur: ${blurAmount.toFixed(0)}`, width / 1.3, height / 18);
+        text(`Blur: ${blurAmount.toFixed(0)}`, width / 1.3, height / 12);
+        blendMode(BLEND);
+    pop();
+
+    push();
+    textAlign(CORNER,CORNER);
+        blendMode(DIFFERENCE)
+        fill(255)
+        textSize(4.5*poster.vw);
+        text(`${(poster.getCounter() - 1 + images.length) % images.length}`, width / 1.1, height / 18);
         blendMode(BLEND);
     pop();
 }
@@ -229,6 +238,8 @@ function viewerInteraction() {
     }
 }
 
+
+//random easing functions to test out
 function easeInCubic(t) {
     return t * t * t;
 }
@@ -237,4 +248,13 @@ function easeOutCubic(t) {
 }   
 function easeInOutCubic(t) {
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+function easeOutQuad(t) {
+    return 1 - (1 - t) * (1 - t);
+    }
+function easeOutBack(t) {
+    const c1 = 1.70158;
+    const c3 = c1 + 1;
+    
+    return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
 }
