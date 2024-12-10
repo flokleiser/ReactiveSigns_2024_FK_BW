@@ -35,12 +35,12 @@ let originalViewerY
 let blurAmount
 
 let currentOutgoingAnchor = { x: 0.5, y: 0.5 }; 
-// let currentOutgoingAnchor = { x: 0, y: 0}; 
 let currentIncomingAnchor = { x: 0, y: 0 }; 
 
 let totalDuration
 let timePassed
 
+//where the small image ends up
 let smallAnchorPoints = [
     //0
     { x: 0, y: 0 },
@@ -48,7 +48,6 @@ let smallAnchorPoints = [
     { x: 0, y: 0 },
     //2
     { x: 0, y: 0.035 },
-    // { x: 0, y: 0 },
     //3
     { x: 0, y: 0 },
     //4
@@ -65,27 +64,33 @@ let smallAnchorPoints = [
     { x: -0, y: 0 },
 ]
 
+//where the bigimage ends up
 let anchorPoints = [
     //0
-    { x: 0, y: 0 },
+    { x: 0.2, y: 0.3 },
     //1
-    { x: 0, y: 0 },
+    { x: -0.3, y: 0 },
     //2
-    { x: 0, y: 0 },
+    { x: -0.2, y: 0 },
     //3
-    { x: 0, y: 0 },
+    // { x: 0.15, y: 0.3 },    
+    { x: 0.35, y: 0.1 },    
     //4
-    { x: 0, y: 0 },
+    // { x: 0, y: 0 },
+    { x: 0, y: -0.1 },    
     //5
-    { x: 0, y: 0 },
+    // { x: 0, y: 0.4 },    
+    { x: 0.35, y: 0.2 },
+    // { x: 0.35, y: 0.1},
+    // { x: 0.1, y: -0.3 },
     //6
-    { x: 0, y: 0 },
+    { x: 0.25, y: 0.2 },
     //7
-    { x: 0, y: 0 },
+    { x: -0.1, y: 0.35 },
     //8
-    { x: 0, y: 0 },
+    { x: 0.25, y: 0.2 },
     //9
-    { x: 0, y: -0.2 },
+    { x: -0.25, y: 0.2 },
 ];
 
 function preload() {
@@ -103,11 +108,11 @@ function setup() {
 }
 
 function draw() {
-    // background(poster.getCounter() % 2 === 0 ? 255 : 0);
-    background(50)
+    background(poster.getCounter() % 2 === 0 ? 255 : 0);
+    // background(50)
 
     viewerInteraction();
-    blurAmount = poster.posNormal.x * 50 
+    blurAmount = poster.posNormal.x * 75 
 
     drawingContext.save();
 
@@ -115,14 +120,16 @@ function draw() {
     const centerEnd = width / 1.5;
 
     if (mappedViewerX < centerStart) {
-        blurAmount = map(originalViewerX * width, 0, centerStart, 50, 0);
+        // blurAmount = map(originalViewerX * width, 0, centerStart, 50, 0);
+        blurAmount = map(originalViewerX * width, 0, centerStart, 75, 0);
     } else if (originalViewerX * width > centerEnd) {
-        blurAmount = map(originalViewerX * width, centerEnd, width, 0, 50);
+        // blurAmount = map(originalViewerX * width, centerEnd, width, 0, 50);
+        blurAmount = map(originalViewerX * width, centerEnd, width, 0, 75);
     } else {
         blurAmount = 0;
     }
 
-    // drawingContext.filter = `blur(${blurAmount}px)`;
+    drawingContext.filter = `blur(${blurAmount}px)`;
     displayNumbers(); 
 
     drawingContext.restore();
@@ -149,7 +156,8 @@ function displayNumbers() {
         transitionInIncrement = 0.03;
         transitionOutIncrement = 0.2;
 
-        incomingRotation = PI*1.5; 
+        // incomingRotation = PI*1.5; 
+        incomingRotation = PI*2; 
         currentOutgoingAnchor.x = smallAnchorPoints[outgoingIndex].x;
         currentOutgoingAnchor.y = smallAnchorPoints[outgoingIndex].y
 
@@ -173,7 +181,7 @@ function displayNumbers() {
     }
 
     if (transitionInScale < targetInScale) {
-        incomingRotation = lerp(incomingRotation, 0, 0.16);
+        incomingRotation = lerp(incomingRotation, 0, 0.18);
     } else {
         incomingRotation = 0;
     }
