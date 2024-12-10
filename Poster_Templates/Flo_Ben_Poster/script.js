@@ -1,7 +1,10 @@
+// - [ ] Question for Luke --> make realsense osc "lerp" less, or be less slow
+// 
 // - [x] Proper eases           
 // - [x] ADJUST ANCHORPOINTS    
 // - [x] Replace PNGs           
 // - [x] Fix outgoing animation 
+//
 // - [ ] Other variation of interaction 
 //      - [ ] try out Halftones --> https://editor.p5js.org/chrsgrbr/sketches/mLNDLCYys
 //      - [ ] multiple circles, more with graytones --> 3D effec
@@ -116,6 +119,7 @@ function draw() {
     drawingContext.restore();
 
     viewerInteraction();
+    //disable this
     displayDebugInfo();
 
     poster.posterTasks();
@@ -152,6 +156,7 @@ function displayNumbers() {
     if (timePassed < totalDuration) {
         const t = timePassed / totalDuration;
         let t2 = 0;
+        // let delay = 0.2
         let delay = 0.3
 
         if (timePassed < delay) {
@@ -165,7 +170,6 @@ function displayNumbers() {
             if (t2 <= 0.9) {
                 // incomingRotation = lerp(incomingRotation, 0, 0.275);
                 incomingRotation = lerp(incomingRotation, 0, easeInOutCubic(t2));
-                console.log(incomingRotation.toFixed(2))
             } else {
                 incomingRotation = 0;
             }
@@ -204,16 +208,7 @@ function displayDebugInfo() {
         blendMode(DIFFERENCE)
         fill(255)
         textSize(4.5*poster.vw);
-        text(`Blur: ${blurAmount.toFixed(0)}`, width / 1.3, height / 12);
-        blendMode(BLEND);
-    pop();
-
-    push();
-    textAlign(CORNER,CORNER);
-        blendMode(DIFFERENCE)
-        fill(255)
-        textSize(4.5*poster.vw);
-        text(`${(poster.getCounter() - 1 + images.length) % images.length}`, width / 1.1, height / 18);
+        text(`${(poster.getCounter() - 1 + images.length) % images.length}   |   Blur: ${blurAmount.toFixed(1)}`, width / 1.55, height / 19)
         blendMode(BLEND);
     pop();
 }
