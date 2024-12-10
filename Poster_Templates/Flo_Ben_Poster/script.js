@@ -1,5 +1,5 @@
 // - [x] Proper eases           
-// - [ ] ADJUST ANCHORPOINTS    
+// - [x] ADJUST ANCHORPOINTS    
 // - [x] Replace PNGs           
 // - [x] Fix outgoing animation 
 // - [ ] Other variation of interaction 
@@ -109,39 +109,16 @@ function setup() {
 
 function draw() {
     background(poster.getCounter() % 2 === 0 ? 255 : 0);
-    // background(50)
-
-    viewerInteraction();
-    blurAmount = poster.posNormal.x * 100 
 
     drawingContext.save();
-
-    const centerStart = width / 3;
-    const centerEnd = width / 1.5;
-
-    //the max amount of blur with the realSense is about 125 - 130, if the max value is 150 --> 85%
-    if (mappedViewerX < centerStart) {
-        // blurAmount = map(originalViewerX * width, 0, centerStart, 50, 0);
-        // blurAmount = map(originalViewerX * width, 0, centerStart, 100, 0);
-        blurAmount = map(originalViewerX * width, 0, centerStart, 150, 0);
-    } else if (originalViewerX * width > centerEnd) {
-        // blurAmount = map(originalViewerX * width, centerEnd, width, 0, 50);
-        // blurAmount = map(originalViewerX * width, centerEnd, width, 0, 100);
-        blurAmount = map(originalViewerX * width, centerEnd, width, 0, 150);
-    } else {
-        blurAmount = 0;
-    }
-
     drawingContext.filter = `blur(${blurAmount}px)`;
     displayNumbers(); 
-
     drawingContext.restore();
 
-    poster.posterTasks();
-}
+    viewerInteraction();
+    displayDebugInfo();
 
-function windowScaled() {
-    textSize(10 * poster.vw);
+    poster.posterTasks();
 }
 
 function displayNumbers() {
@@ -164,8 +141,6 @@ function displayNumbers() {
         transitionOutIncrement = 0.2;
 
         incomingRotation = PI*1.5; 
-        // incomingRotation = PI*5.5; 
-        // incomingRotation = PI*2; 
         currentOutgoingAnchor.x = smallAnchorPoints[outgoingIndex].x;
         currentOutgoingAnchor.y = smallAnchorPoints[outgoingIndex].y
 
@@ -187,7 +162,6 @@ function displayNumbers() {
             timePassed2 = 0;
         } else {
             t2 = map(timePassed, 0.3, totalDuration, 0, 1);
-            // t2 = constrain(t2, 0, 1);
             transitionInScale = lerp(transitionInScale, targetInScale, easeInCubic(t2));
 
             if (t2 <= 0.9) {
@@ -225,6 +199,16 @@ function displayNumbers() {
     pop();
 }
 
+function displayDebugInfo() {
+    push();
+        blendMode(DIFFERENCE)
+        fill(255)
+        textSize(4.5*poster.vw);
+        text(`Blur: ${blurAmount.toFixed(0)}`, width / 1.3, height / 18);
+        blendMode(BLEND);
+    pop();
+}
+
 function viewerInteraction() {
     originalViewerX = poster.posNormal.x
     originalViewerY = poster.posNormal.y
@@ -232,6 +216,17 @@ function viewerInteraction() {
     //i did not read the docs so i did not know poster.position.x etc was a thing, and now im too lazy to change it
     mappedViewerX = map(poster.posNormal.x,0,1,0,width)
     mappedViewerY = map(poster.posNormal.y,0,1,0,height) 
+
+    const centerStart = width / 3;
+    const centerEnd = width / 1.5;
+    //the max amount of blur with the realSense is about 85% of the max value
+    if (mappedViewerX < centerStart) {
+        blurAmount = map(originalViewerX * width, 0, centerStart, 150, 0);
+    } else if (originalViewerX * width > centerEnd) {
+        blurAmount = map(originalViewerX * width, centerEnd, width, 0, 150);
+    } else {
+        blurAmount = 0;
+    }
 }
 
 function easeInCubic(t) {
