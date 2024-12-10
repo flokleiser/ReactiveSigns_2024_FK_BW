@@ -131,7 +131,7 @@ function draw() {
         blurAmount = 0;
     }
 
-    // drawingContext.filter = `blur(${blurAmount}px)`;
+    drawingContext.filter = `blur(${blurAmount}px)`;
     displayNumbers(); 
 
     drawingContext.restore();
