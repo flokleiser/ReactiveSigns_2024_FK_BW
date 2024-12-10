@@ -1,7 +1,8 @@
-//TODO: Proper eases
-//TODO: ADJUST ANCHORPOINTS
-//TODO: Replace PNGs
-//TODO: Fix outgoing animation 
+// - [x] Proper eases           
+// - [ ] ADJUST ANCHORPOINTS    
+// - [x] Replace PNGs           
+// - [x] Fix outgoing animation 
+// - [ ] Other variation of interaction 
 
 let rotationHistory = [];
 let images = [];
