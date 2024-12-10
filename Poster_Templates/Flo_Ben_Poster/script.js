@@ -79,16 +79,10 @@ let anchorPoints = [
     { x: -0.2, y: 0 },
     //3
     { x: 0, y: -0.3 },    
-    // { x: 0.15, y: 0.3 },    
-    // { x: 0.35, y: 0.1 },    
     //4
-    // { x: 0, y: 0 },
     { x: 0, y: -0.1 },    
     //5
-    // { x: 0, y: 0.4 },    
     { x: 0.35, y: 0.2 },
-    // { x: 0.35, y: 0.1},
-    // { x: 0.1, y: -0.3 },
     //6
     { x: 0.25, y: 0.2 },
     //7
@@ -150,6 +144,10 @@ function windowScaled() {
 function displayNumbers() {
     let outgoingIndex = poster.getCounter();
     let incomingIndex = (poster.getCounter() - 1 + images.length) % images.length;
+
+    if (incomingIndex === undefined) {
+        incomingIndex = 9;
+    }
 
     outgoingImage = images[outgoingIndex];
     incomingImage = images[incomingIndex];
@@ -229,7 +227,6 @@ function displayNumbers() {
     pop();
 }
 
-//calculations for the x postitions etc
 function viewerInteraction() {
     originalViewerX = poster.posNormal.x
     originalViewerY = poster.posNormal.y
@@ -238,7 +235,6 @@ function viewerInteraction() {
     mappedViewerY = map(poster.posNormal.y,0,1,0,height) 
 }
 
-//easing tests
 function easeInCubic(t) {
     return t * t * t;
 }

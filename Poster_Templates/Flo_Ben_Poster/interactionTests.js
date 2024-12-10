@@ -1,4 +1,3 @@
-
 let rotationHistory = [];
 let images = [];
 let font;
