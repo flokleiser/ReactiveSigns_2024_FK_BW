@@ -48,7 +48,7 @@ let smallAnchorPoints = [
     //1
     { x: 0, y: 0 },
     //2
-    { x: 0, y: 0.035 },
+    { x: 0, y: 0.04 },
     //3
     { x: 0, y: 0 },
     //4
@@ -70,12 +70,13 @@ let anchorPoints = [
     //0
     { x: 0.2, y: 0.3 },
     //1
-    { x: -0.3, y: 0 },
+    { x: -0.3, y:0 },
     //2
     { x: -0.2, y: 0 },
     //3
+    { x: 0, y: -0.3 },    
     // { x: 0.15, y: 0.3 },    
-    { x: 0.35, y: 0.1 },    
+    // { x: 0.35, y: 0.1 },    
     //4
     // { x: 0, y: 0 },
     { x: 0, y: -0.1 },    
@@ -157,8 +158,9 @@ function displayNumbers() {
         transitionInIncrement = 0.03;
         transitionOutIncrement = 0.2;
 
-        // incomingRotation = PI*1.5; 
-        incomingRotation = PI*2; 
+        incomingRotation = PI*1.5; 
+        // incomingRotation = PI*5.5; 
+        // incomingRotation = PI*2; 
         currentOutgoingAnchor.x = smallAnchorPoints[outgoingIndex].x;
         currentOutgoingAnchor.y = smallAnchorPoints[outgoingIndex].y
 
@@ -170,37 +172,36 @@ function displayNumbers() {
     targetOutScale = 8.6;
     timePassed += deltaTime / 1000;
 
-    if (timePassed === 0) {
-        transitionInScale = 0; 
 
-    } else 
+    // if (timePassed === 0) {
+    //     transitionInScale = 0; 
+
+    // } else 
     if (timePassed < totalDuration) {
         const t = timePassed / totalDuration;
         let t2 = 0;
-        
 
         if (timePassed < 0.3) {
-         transitionInScale = 0.000001; 
-         t2 = 0.0;
-         timePassed2 = 0;
-         console.log("-")
+            transitionInScale = 0.000001; 
+            t2 = 0.0;
+            timePassed2 = 0;
         } else {
-        let deltaTime2 = (totalDuration-0.3)/(deltaTime / 1000);
-        timePassed2 += deltaTime2 / 1000;
-        t2 = timePassed2 / totalDuration;
-        transitionInScale = lerp(transitionInScale, targetInScale, easeInCubic(t2));
-        console.log(t2)
+            t2 = map(timePassed, 0.3, totalDuration, 0, 1);
+            // t2 = constrain(t2, 0, 1);
+            transitionInScale = lerp(transitionInScale, targetInScale, easeInCubic(t2));
+            console.log(t2)
+
+            if (t2 <= 0.9) {
+                incomingRotation = lerp(incomingRotation, 0, 0.275);
+            } else {
+                incomingRotation = 0;
+            }
         }
 
         transitionOutScale = lerp(transitionOutScale, targetOutScale, easeInCubic(t));
 
         currentOutgoingAnchor.x = lerp(currentOutgoingAnchor.x, targetOutgoingAnchor.x, easeInCubic(t));
         currentOutgoingAnchor.y = lerp(currentOutgoingAnchor.y, targetOutgoingAnchor.y, easeInCubic(t));
-    }
-    if (transitionInScale < targetInScale) {
-        incomingRotation = lerp(incomingRotation, 0, 0.18);
-    } else {
-        incomingRotation = 0;
     }
 
     push();
@@ -216,11 +217,10 @@ function displayNumbers() {
         imageMode(CENTER);
         //this is very hacky but i dont care
         if (outgoingIndex === 3) {
-           translate(width/2, height/2 - 4*poster.vh) 
+           translate(width/2, height/2 - 5*poster.vh) 
         } else {
             translate(width/2, height/2)
         }
-        // translate(width/2, height/2)
         rotate(-incomingRotation);
         image(incomingImage, 0, 0, width * transitionInScale, (height / aspectRatio) * transitionInScale);
     pop();
