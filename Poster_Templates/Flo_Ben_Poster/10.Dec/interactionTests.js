@@ -116,11 +116,10 @@ function draw() {
     const centerStart = width / 3;
     const centerEnd = width / 1.5;
 
+    //the max amount of blur with the realSense is about 125 - 130, if the max value is 150 --> 85%
     if (mappedViewerX < centerStart) {
-        // blurAmount = map(originalViewerX * width, 0, centerStart, 50, 0);
         blurAmount = map(originalViewerX * width, 0, centerStart, 150, 0);
     } else if (originalViewerX * width > centerEnd) {
-        // blurAmount = map(originalViewerX * width, centerEnd, width, 0, 50);
         blurAmount = map(originalViewerX * width, centerEnd, width, 0, 150);
     } else {
         blurAmount = 0;
@@ -128,6 +127,8 @@ function draw() {
 
     drawingContext.filter = `blur(${blurAmount}px)`;
     displayNumbers(); 
+
+    console.log(blurAmount.toFixed(0))
 
     drawingContext.restore();
 
@@ -209,7 +210,7 @@ function displayNumbers() {
 
     push();
         imageMode(CENTER);
-        //this is very hacky but i dont care
+        //this is a very hacky way to display the "2" slightly more up, but i dont care
         if (outgoingIndex === 3) {
            translate(width/2, height/2 - 5*poster.vh) 
         } else {
@@ -225,6 +226,7 @@ function viewerInteraction() {
     originalViewerX = poster.posNormal.x
     originalViewerY = poster.posNormal.y
 
+    //i did not read the docs so i did not know poster.position.x etc was a thing, and now im too lazy to change it
     mappedViewerX = map(poster.posNormal.x,0,1,0,width)
     mappedViewerY = map(poster.posNormal.y,0,1,0,height) 
 }
@@ -239,7 +241,3 @@ function easeOutCubic(t) {
 function easeInOutCubic(t) {
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
-
-
-
-
