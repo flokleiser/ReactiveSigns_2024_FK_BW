@@ -1,11 +1,3 @@
-// - [x] Proper eases           
-// - [ ] ADJUST ANCHORPOINTS    
-// - [x] Replace PNGs           
-// - [x] Fix outgoing animation 
-// - [ ] Other variation of interaction 
-//      - [ ] try out Halftones --> https://editor.p5js.org/chrsgrbr/sketches/mLNDLCYys
-//      - [ ] multiple circles, more with graytones --> 3D effec
-
 
 let rotationHistory = [];
 let images = [];
@@ -118,7 +110,7 @@ function draw() {
     // background(50)
 
     viewerInteraction();
-    blurAmount = poster.posNormal.x * 100 
+    blurAmount = poster.posNormal.x * 150 
 
     drawingContext.save();
 
@@ -127,10 +119,10 @@ function draw() {
 
     if (mappedViewerX < centerStart) {
         // blurAmount = map(originalViewerX * width, 0, centerStart, 50, 0);
-        blurAmount = map(originalViewerX * width, 0, centerStart, 100, 0);
+        blurAmount = map(originalViewerX * width, 0, centerStart, 150, 0);
     } else if (originalViewerX * width > centerEnd) {
         // blurAmount = map(originalViewerX * width, centerEnd, width, 0, 50);
-        blurAmount = map(originalViewerX * width, centerEnd, width, 0, 100);
+        blurAmount = map(originalViewerX * width, centerEnd, width, 0, 150);
     } else {
         blurAmount = 0;
     }
@@ -248,3 +240,7 @@ function easeOutCubic(t) {
 function easeInOutCubic(t) {
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
+
+
+
+
