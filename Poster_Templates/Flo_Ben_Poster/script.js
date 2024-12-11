@@ -1,7 +1,5 @@
-// - [ ] Question for Luke --> make realsense osc "lerp" less, or be less slow
-//
-// - [ ] Other variation of interaction 
-
+/* - [ ] Question for Luke --> make realsense osc "lerp" less, or be less slow */
+/* - [ ] grainy blur */
 
 let images = [];
 let aspectRatio = 1.375;
@@ -103,7 +101,7 @@ function setup() {
 function draw() {
     background(poster.getCounter() % 2 === 0 ? 255 : 0);
 
-    //blur logic
+    /*blur logic*/
     viewerInteraction();
     drawingContext.save();
         drawingContext.filter = `blur(${blurAmount}px)`;
