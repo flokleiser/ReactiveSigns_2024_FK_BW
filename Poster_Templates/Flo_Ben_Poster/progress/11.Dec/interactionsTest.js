@@ -1,6 +1,27 @@
 // - [ ] Question for Luke --> make realsense osc "lerp" less, or be less slow
 //
 // - [ ] Other variation of interaction 
+//      - ChatGPT suggestions:
+//
+//         7. Dynamic Shadow Play
+//         Add dynamic shadows or lighting effects that follow poster.posNormal to create the illusion of a moving light source.
+//         Implementation Idea:
+//         Use drawingContext.shadowOffsetX, shadowOffsetY, and shadowBlur in sync with poster.posNormal.
+//
+//         8. Perspective Shift
+//         Alter the perspective of the image slightly based on poster.posNormal to simulate depth.
+//         Implementation Idea:
+//         Apply skew transformations to image() coordinates using quad() to mimic perspective changes.
+//
+//         9. Edge Ripple Effect
+//         Create a rippling distortion effect along the edges of the canvas, growing stronger as poster.posNormal approaches the edges.
+//         Implementation Idea:
+//         Apply a sine wave distortion to edge pixels or use filter(POSTERIZE) with varying levels.
+//
+//         10. Interactive Text Reveals
+//         Introduce hidden text or shapes that reveal themselves as poster.posNormal moves across certain areas of the screen.
+//         Implementation Idea:
+//         Use masking techniques or transparency levels tied to poster.posNormal.
 
 
 let rotationHistory = [];
@@ -104,18 +125,36 @@ function setup() {
 }
 
 function draw() {
-    background(poster.getCounter() % 2 === 0 ? 255 : 0);
+    // background(poster.getCounter() % 2 === 0 ? 255 : 0);
+    background(50)
 
-        //blur logic
-    viewerInteraction();
-    drawingContext.save();
-        drawingContext.filter = `blur(${blurAmount}px)`;
+    //blur logic
+    // viewerInteraction();
+    // drawingContext.save();
+    //     drawingContext.filter = `blur(${blurAmount}px)`;
         displayNumbers(); 
-    drawingContext.restore();
+    // drawingContext.restore();
+
+
+    //ripple effect, i dont know
+    // let rippleIntensity = map(
+    //     dist(poster.posNormal.x, poster.posNormal.y, 0.5, 0.5),
+    //     0, 0.7, 0, 10, true
+    // );
+    // drawingContext.save();
+    // displayNumbers();
+    // for (let y = 0; y < height; y += 10) {
+    //     let offset = sin(frameCount * 0.05 + y * 0.1) * rippleIntensity;
+    //     copy(0, y, width, 10, offset, y, width, 10);
+    // }
+    // drawingContext.restore();
+    // viewerInteraction();
+    // displayDebugInfo();
+    
 
 
     //disable this
-    // displayDebugInfo();
+    displayDebugInfo();
 
     poster.posterTasks();
 }
@@ -196,14 +235,46 @@ function displayNumbers() {
         rotate(-incomingRotation);
         image(incomingImage, 0, 0, width * transitionInScale, (height / aspectRatio) * transitionInScale);
     pop();
+
+    for (let y = 0; y < height; y++) {
+        let waveOffset = sin((y + frameCount * 5) * 0.02 + poster.posNormal.x * 10) * 10;
+        copy(outgoingImage, 0, y, width, 1, waveOffset, y, width, 1);
+    }
+
 }
+
+
+// function displayNumbers() {
+//     let numTiles = 10;
+//     let tileWidth = width / numTiles;
+//     let tileHeight = height / numTiles;
+
+//     let offset = map(dist(poster.posNormal.x, poster.posNormal.y, 0.5, 0.5), 0, 0.7, 0, 100);
+
+//     for (let x = 0; x < numTiles; x++) {
+//         for (let y = 0; y < numTiles; y++) {
+//             let posX = x * tileWidth + offset * (poster.posNormal.x - 0.5);
+//             let posY = y * tileHeight + offset * (poster.posNormal.y - 0.5);
+//             image(
+//                 outgoingImage,
+//                 posX, posY, tileWidth, tileHeight,
+//                 x * (outgoingImage.width / numTiles), y * (outgoingImage.height / numTiles),
+//                 outgoingImage.width / numTiles, outgoingImage.height / numTiles
+//             );
+//         }
+//     }
+// }
+
+
+
 
 function displayDebugInfo() {
     push();
         blendMode(DIFFERENCE)
         fill(255)
         textSize(4.5*poster.vw);
-        text(`${(poster.getCounter() - 1 + images.length) % images.length}   |   Blur: ${blurAmount.toFixed(1)}`, width / 1.55, height / 19)
+        // text(`${(poster.getCounter() - 1 + images.length) % images.length}   |   Blur: ${blurAmount.toFixed(1)}`, width / 1.55, height / 19)
+        text(`${(poster.getCounter() - 1 + images.length) % images.length}`, width / 1.55, height / 19)
         blendMode(BLEND);
     pop();
 }
