@@ -1,7 +1,10 @@
-/* - [ ] Question for Luke --> make realsense osc "lerp" less, or be less slow */
-/* - [ ] grainy blur --> pretty much needs shaders, https://editor.p5js.org/one-generated-pixel/sketches/zlzoJzRp__ */
+// - [ ] Question for Luke --> make realsense osc "lerp" less, or be less slow
+// - [ ] Imagebuffer for halftone thing
+// - [ ] grainy blur --> pretty much needs shaders, https://editor.p5js.org/one-generated-pixel/sketches/zlzoJzRp__
 
 let images = [];
+let testImageWhite
+let testImageBlack
 let aspectRatio = 1.375;
 
 let previousCounter = -1;
@@ -88,14 +91,15 @@ function preload() {
     for (let i = 0; i < 10; i++) {
         images[i] = loadImage( `/Poster_Templates/Flo_Ben_Poster/images/${i}.png` );
     }
+    testImageBlack = loadImage( `/Poster_Templates/Flo_Ben_Poster/images/2.png` );
+    testImageWhite = loadImage( `/Poster_Templates/Flo_Ben_Poster/images/light/2.png` );
 }
 
 function setup() {
-    // createCanvas(poster.getWindowWidth(), poster.getWindowHeight());
-
-    let canvas = createCanvas(poster.getWindowWidth(), poster.getWindowHeight(), P2D);
+    let canvas = createCanvas(poster.getWindowWidth(), poster.getWindowHeight());
     canvas.drawingContext.willReadFrequently = true;
 
+    halftoneBuffer = createGraphics(width, height);
 
     poster.setup(this, "models/movenet/model.json");
 
@@ -104,19 +108,30 @@ function setup() {
 }
 
 function draw() {
-    // background(poster.getCounter() % 2 === 0 ? 255 : 0);
-    background(50)
+    background(poster.getCounter() % 2 === 0 ? 255 : 0);
+    // background(50)
 
-    /* Blur logic */
     viewerInteraction();
     drawingContext.save();
     drawingContext.filter = `blur(${blurAmount}px)`;
-    displayNumbers(); 
+    // displayNumbers(); 
+
+    push();
+        imageMode(CENTER);
+        translate(width/2, height/2)
+        rotate(-incomingRotation);
+        image(poster.getCounter() % 2 === 0? testImageBlack:testImageWhite, 0, 0, width, (height / aspectRatio) );
+    pop();
+
     drawingContext.restore();
 
-    // Disable this
-    // displayDebugInfo();
+    drawingContext.filter = "none";
 
+    if (blurAmount > 0) {
+        applyHalftone(blurAmount);
+    } 
+
+    // image(halftoneBuffer, 0, 0);
     poster.posterTasks();
 }
 
@@ -226,6 +241,56 @@ function viewerInteraction() {
         blurAmount = 0;
     }
 }
+
+function applyHalftone(blurAmount) {
+    let gridSize = constrain(map(blurAmount, 0, 20, 20, 5), 20, 30);
+
+    // halftoneBuffer.loadPixels();
+    loadPixels();
+    for (let y = 0; y < height; y += gridSize) {
+        for (let x = 0; x < width; x += gridSize) {
+            let idx = (y * width + x) * 4;
+            let r = pixels[idx];
+            let g = pixels[idx + 1];
+            let b = pixels[idx + 2];
+            let brightnessValue = (r + g + b) / 3;
+
+            let maxSize = gridSize * 0.8;
+            // let maxSize = gridSize 
+            let circleSize = map(brightnessValue, 0, 255, maxSize, 0);
+            let circleOpacity = map(blurAmount, 0 , 100, 0, 255);
+
+            fill(0,0,0,circleOpacity);
+            noStroke();
+            ellipse(x, y, circleSize, circleSize);
+        }
+    }
+}
+
+// function applyHalftone(blurAmount) {
+//     let gridSize = constrain(map(blurAmount, 0, 20, 20, 5), 20, 30);
+//     let maxSize = gridSize * 0.5;
+//     let halftoneBuffer = createGraphics(width, height); // Offscreen buffer
+
+//     halftoneBuffer.loadPixels();
+//     for (let y = 0; y < height; y += gridSize) {
+//         for (let x = 0; x < width; x += gridSize) {
+//             let idx = (y * width + x) * 4;
+//             let r = pixels[idx];
+//             let g = pixels[idx + 1];
+//             let b = pixels[idx + 2];
+//             let brightnessValue = (r + g + b) / 3;
+
+//             let circleSize = map(brightnessValue, 0, 255, maxSize, 0);
+//             halftoneBuffer.fill(0);
+//             halftoneBuffer.noStroke();
+//             halftoneBuffer.ellipse(x, y, circleSize, circleSize);
+//         }
+//     }
+//     halftoneBuffer.updatePixels();
+//     image(halftoneBuffer, 0, 0);
+// }
+
 
 //random easing functions to test out
 function easeInCubic(t) {
