@@ -1,5 +1,5 @@
 /* - [ ] Question for Luke --> make realsense osc "lerp" less, or be less slow */
-/* - [ ] grainy blur */
+/* - [ ] grainy blur --> pretty much needs shaders, https://editor.p5js.org/one-generated-pixel/sketches/zlzoJzRp__ */
 
 let images = [];
 let aspectRatio = 1.375;
@@ -91,7 +91,12 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(poster.getWindowWidth(), poster.getWindowHeight());
+    // createCanvas(poster.getWindowWidth(), poster.getWindowHeight());
+
+    let canvas = createCanvas(poster.getWindowWidth(), poster.getWindowHeight(), P2D);
+    canvas.drawingContext.willReadFrequently = true;
+
+
     poster.setup(this, "models/movenet/model.json");
 
     totalDuration = 0.6
@@ -99,17 +104,17 @@ function setup() {
 }
 
 function draw() {
-    background(poster.getCounter() % 2 === 0 ? 255 : 0);
+    // background(poster.getCounter() % 2 === 0 ? 255 : 0);
+    background(50)
 
-    /*blur logic*/
+    /* Blur logic */
     viewerInteraction();
     drawingContext.save();
-        drawingContext.filter = `blur(${blurAmount}px)`;
-        displayNumbers(); 
+    drawingContext.filter = `blur(${blurAmount}px)`;
+    displayNumbers(); 
     drawingContext.restore();
 
-
-    //disable this
+    // Disable this
     // displayDebugInfo();
 
     poster.posterTasks();
@@ -198,7 +203,6 @@ function displayDebugInfo() {
         blendMode(DIFFERENCE)
         fill(255)
         textSize(4.5*poster.vw);
-        text(`${(poster.getCounter() - 1 + images.length) % images.length}   |   Blur: ${blurAmount.toFixed(1)}`, width / 1.55, height / 19)
         blendMode(BLEND);
     pop();
 }
@@ -222,7 +226,6 @@ function viewerInteraction() {
         blurAmount = 0;
     }
 }
-
 
 //random easing functions to test out
 function easeInCubic(t) {
