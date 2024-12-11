@@ -1,12 +1,8 @@
-# To-Do:
+# IAD HS24 Reactive Signs
 
-- [ ] Viewer interaction
-- [ ] Higher quality pngs
-- [ ] Decide what to do about the pixelation
-
+![](/inspiration_gifs/showcase_new.gif)
 
 ___
-![](/inspiration_gifs/showcase3.gif)
 
 ### Comparison:
 <div style="display:flex;flex-direction:row;justify-content:center">
