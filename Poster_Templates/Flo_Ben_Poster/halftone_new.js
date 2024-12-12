@@ -118,16 +118,16 @@ function draw() {
     viewerInteraction();
     drawingContext.save();
     drawingContext.filter = `blur(${blurAmount}px)`;
-    // displayNumbers(); 
+    displayNumbers(); 
 
 
     // static image for testing
-    push();
-        imageMode(CENTER);
-        translate(width/2-poster.vw, height/2)
-        rotate(-incomingRotation);
-        image(poster.getCounter() % 2 === 0? testImageBlack:testImageWhite, 0, 0, width, (height / aspectRatio) );
-    pop();
+    // push();
+    //     imageMode(CENTER);
+    //     translate(width/2-poster.vw, height/2)
+    //     rotate(-incomingRotation);
+    //     image(poster.getCounter() % 2 === 0? testImageBlack:testImageWhite, 0, 0, width, (height / aspectRatio) );
+    // pop();
 
     drawingContext.restore();
 
@@ -136,8 +136,6 @@ function draw() {
     if (blurAmount > 0) {
         applyHalftone(blurAmount/10);
         image(halftoneBuffer, 0, 0);
-
-        
     } 
 
     poster.posterTasks();
@@ -276,53 +274,6 @@ function applyHalftone(blurAmount) {
         }
     }
 }
-
-function applyHalftone(blurAmount) {
-    const gridSize = poster.vh * 2;
-    const maxSize = constrain(map(blurAmount, 0, 20, gridSize * 2, gridSize), gridSize * 0.5, gridSize * 2);
-
-    halftoneBuffer.loadPixels();
-    halftoneBuffer.clear();
-    halftoneBuffer.noStroke();
-
-    const circleOpacity = map(blurAmount, 0, 3, 0, 255);
-
-    for (let y = 0; y < height; y += gridSize) {
-        for (let x = 0; x < width; x += gridSize) {
-
-            // const index = (y * width + x) * 4
-            // const brightnessValue = (halftoneBuffer.pixels[index] + halftoneBuffer.pixels[index + 1] + halftoneBuffer.pixels[index + 2]) / 3;
-
-            // const idx = (y * width + x) * 4; // Pixel index in RGBA format
-            // const brightnessValue = (
-            //     halftoneBuffer.pixels[idx] +
-            //     halftoneBuffer.pixels[idx + 1] +
-            //     halftoneBuffer.pixels[idx + 2]
-            // ) / 3;
-
-            //get--> super slow
-            // const c = get(x, y); // Retrieve from main canvas
-            // const brightnessValue = (c[0] + c[1] + c[2]) / 3;
-
-            const index = (y * width + x) * 4; // Calculate the pixel index in the pixels array
-            const r = pixels[index];
-            const g = pixels[index + 1];
-            const b = pixels[index + 2];
-            const brightnessValue = (r + g + b) / 3;
-
-
-            const circleSize = map(brightnessValue, 0, 255, maxSize, 0);
-            halftoneBuffer.fill(0, 0, 0, circleOpacity);
-            halftoneBuffer.ellipse(x, y, circleSize, circleSize);
-
-            halftoneBuffer.stroke(255, 0, 0);
-            halftoneBuffer.point(x * gridSize, y * gridSize);
-        }
-    }
-
-    halftoneBuffer.updatePixels();
-}
-
 
 
 //random easing functions to test out
