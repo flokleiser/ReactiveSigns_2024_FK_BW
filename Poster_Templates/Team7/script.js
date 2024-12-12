@@ -3,8 +3,6 @@
 // - [ ] grainy blur --> pretty much needs shaders, https://editor.p5js.org/one-generated-pixel/sketches/zlzoJzRp__
 
 let images = [];
-let testImageWhite
-let testImageBlack
 let aspectRatio = 1.375;
 
 let previousCounter = -1;
@@ -38,8 +36,6 @@ let currentIncomingAnchor = { x: 0, y: 0 };
 let totalDuration
 let timePassed
 let timePassed2
-
-let halftoneBuffer
 
 //where the small image ends up
 let smallAnchorPoints = [
@@ -93,50 +89,29 @@ function preload() {
     for (let i = 0; i < 10; i++) {
         images[i] = loadImage( `/Poster_Templates/Flo_Ben_Poster/images/${i}.png` );
     }
-    testImageBlack = loadImage( `/Poster_Templates/Flo_Ben_Poster/images/2.png` );
-    testImageWhite = loadImage( `/Poster_Templates/Flo_Ben_Poster/images/light/2.png` );
 }
 
 function setup() {
-    let canvas = createCanvas(poster.getWindowWidth(), poster.getWindowHeight());
-    canvas.drawingContext.willReadFrequently = true;
-
-    halftoneBuffer = createGraphics(width, height);
-
+    createCanvas(poster.getWindowWidth(), poster.getWindowHeight());
     poster.setup(this, "models/movenet/model.json");
 
     totalDuration = 0.6
     timePassed = 0
-    // halftoneBuffer.pixelDensity(1)
-    // pixelDensity(1)
 }
 
 function draw() {
     background(poster.getCounter() % 2 === 0 ? 255 : 0);
-    // background(50)
 
+    /*blur logic*/
     viewerInteraction();
     drawingContext.save();
-    drawingContext.filter = `blur(${blurAmount}px)`;
-    displayNumbers(); 
-
-
-    // static image for testing
-    // push();
-    //     imageMode(CENTER);
-    //     translate(width/2-poster.vw, height/2)
-    //     rotate(-incomingRotation);
-    //     image(poster.getCounter() % 2 === 0? testImageBlack:testImageWhite, 0, 0, width, (height / aspectRatio) );
-    // pop();
-
+        drawingContext.filter = `blur(${blurAmount}px)`;
+        displayNumbers(); 
     drawingContext.restore();
 
-    drawingContext.filter = "none";
 
-    if (blurAmount > 0) {
-        applyHalftone(blurAmount/10);
-        image(halftoneBuffer, 0, 0);
-    } 
+    //disable this
+    // displayDebugInfo();
 
     poster.posterTasks();
 }
@@ -224,6 +199,7 @@ function displayDebugInfo() {
         blendMode(DIFFERENCE)
         fill(255)
         textSize(4.5*poster.vw);
+        text(`${(poster.getCounter() - 1 + images.length) % images.length}   |   Blur: ${blurAmount.toFixed(1)}`, width / 1.55, height / 19)
         blendMode(BLEND);
     pop();
 }
@@ -248,33 +224,6 @@ function viewerInteraction() {
     }
 }
 
-//buffer working
-function applyHalftone(blurAmount) {
-    let gridSize = poster.vh*2
-
-    halftoneBuffer.clear();
-    halftoneBuffer.noStroke()
-
-    let maxSize = constrain(map(blurAmount, 0, 20, gridSize * 2, gridSize), gridSize * 0.5, gridSize * 2);
-
-    for (let y = 0; y < height; y += gridSize) {
-        for (let x = 0; x < width; x += gridSize) {
-            let c = get(x, y);
-            let brightnessValue = (c[0] + c[1] + c[2]) / 3;
-
-            let circleSize = map(brightnessValue, 0, 255, maxSize, 0);
-
-            // let circleOpacity = 255
-            let circleOpacity = map(blurAmount, 0, 3, 0, 255);
-
-            halftoneBuffer.fill(0,0,0,circleOpacity);
-            halftoneBuffer.noStroke();
-
-            halftoneBuffer.ellipse(x, y, circleSize, circleSize);
-        }
-    }
-}
-
 
 //random easing functions to test out
 function easeInCubic(t) {
@@ -295,8 +244,3 @@ function easeOutBack(t) {
     
     return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
 }
-
-// function windowResized() {
-//     resizeCanvas(poster.getWindowWidth(), poster.getWindowHeight());
-//     halftoneBuffer = createGraphics(width, height);
-// }
