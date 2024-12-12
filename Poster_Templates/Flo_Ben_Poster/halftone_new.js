@@ -300,8 +300,9 @@ function applyHalftone(blurAmount) {
             let brightnessValue = (c[0] + c[1] + c[2]) / 3;
 
             let circleSize = map(brightnessValue, 0, 255, maxSize, 0);
-            let circleOpacity = map(blurAmount, 0, 50, 50, 255);
+            let circleOpacity = constrain(map(blurAmount, 0, 10, 0, 255),0,255);
             halftoneBuffer.fill(0,0,0,circleOpacity);
+            console.log(circleOpacity)
             halftoneBuffer.noStroke();
 
             halftoneBuffer.ellipse(x, y, circleSize, circleSize);
