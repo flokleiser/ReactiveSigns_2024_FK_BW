@@ -1,5 +1,6 @@
-/* - [ ] Question for Luke --> make realsense osc "lerp" less, or be less slow */
-/* - [ ] grainy blur */
+// - [ ] Question for Luke --> make realsense osc "lerp" less, or be less slow
+// - [x] Imagebuffer for halftone thing
+// - [ ] grainy blur --> pretty much needs shaders, https://editor.p5js.org/one-generated-pixel/sketches/zlzoJzRp__
 
 let images = [];
 let aspectRatio = 1.375;
