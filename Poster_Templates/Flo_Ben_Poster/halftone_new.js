@@ -39,6 +39,8 @@ let totalDuration
 let timePassed
 let timePassed2
 
+let halftoneBuffer
+
 //where the small image ends up
 let smallAnchorPoints = [
     //0
@@ -100,6 +102,7 @@ function setup() {
     canvas.drawingContext.willReadFrequently = true;
 
     halftoneBuffer = createGraphics(width, height);
+    // console.log(halftoneBuffer.width, halftoneBuffer.height)
 
     poster.setup(this, "models/movenet/model.json");
 
@@ -114,24 +117,32 @@ function draw() {
     viewerInteraction();
     drawingContext.save();
     drawingContext.filter = `blur(${blurAmount}px)`;
-    // displayNumbers(); 
+    displayNumbers(); 
 
-    push();
-        imageMode(CENTER);
-        translate(width/2, height/2)
-        rotate(-incomingRotation);
-        image(poster.getCounter() % 2 === 0? testImageBlack:testImageWhite, 0, 0, width, (height / aspectRatio) );
-    pop();
+
+    //static image for testing
+    // push();
+    //     imageMode(CENTER);
+    //     translate(width/2-poster.vw, height/2)
+    //     rotate(-incomingRotation);
+    //     image(poster.getCounter() % 2 === 0? testImageBlack:testImageWhite, 0, 0, width, (height / aspectRatio) );
+    // pop();
 
     drawingContext.restore();
 
     drawingContext.filter = "none";
 
+    // halftoneBuffer.loadPixels();
+    // console.log(`Pixels loaded: ${halftoneBuffer.pixels.length}`);
+
     if (blurAmount > 0) {
-        applyHalftone(blurAmount);
+        // applyHalftone(blurAmount);
+        // halftoneBuffer.background(255, 0, 0);
+        applyHalftone(blurAmount/10);
+        // applyHalftone(10);
+        image(halftoneBuffer, 0, 0);
     } 
 
-    // image(halftoneBuffer, 0, 0);
     poster.posterTasks();
 }
 
@@ -242,37 +253,19 @@ function viewerInteraction() {
     }
 }
 
-function applyHalftone(blurAmount) {
-    let gridSize = constrain(map(blurAmount, 0, 20, 20, 5), 20, 30);
-
-    // halftoneBuffer.loadPixels();
-    loadPixels();
-    for (let y = 0; y < height; y += gridSize) {
-        for (let x = 0; x < width; x += gridSize) {
-            let idx = (y * width + x) * 4;
-            let r = pixels[idx];
-            let g = pixels[idx + 1];
-            let b = pixels[idx + 2];
-            let brightnessValue = (r + g + b) / 3;
-
-            let maxSize = gridSize * 0.8;
-            // let maxSize = gridSize 
-            let circleSize = map(brightnessValue, 0, 255, maxSize, 0);
-            let circleOpacity = map(blurAmount, 0 , 100, 0, 255);
-
-            fill(0,0,0,circleOpacity);
-            noStroke();
-            ellipse(x, y, circleSize, circleSize);
-        }
-    }
-}
-
+//halftone no buffer, kinda works
 // function applyHalftone(blurAmount) {
-//     let gridSize = constrain(map(blurAmount, 0, 20, 20, 5), 20, 30);
-//     let maxSize = gridSize * 0.5;
-//     let halftoneBuffer = createGraphics(width, height); // Offscreen buffer
+//     let gridSize = constrain(map(blurAmount, 0, 20, 20, 5), 20,30);
+//     // let gridSize = map(blurAmount, 0, 20, 20, 5);
 
-//     halftoneBuffer.loadPixels();
+//     // let gridSize = constrain(map(blurAmount, 0, 20, 20, 5), 20, 30);
+//     // gridSize = map(width, 0, 1920, gridSize, gridSize * 2);
+//     // let gridSize = constrain(map(blurAmount, 0, 20, width, height), width, height);
+//     // console.log(gridSize)
+
+
+//     // halftoneBuffer.loadPixels();
+//     loadPixels();
 //     for (let y = 0; y < height; y += gridSize) {
 //         for (let x = 0; x < width; x += gridSize) {
 //             let idx = (y * width + x) * 4;
@@ -281,15 +274,46 @@ function applyHalftone(blurAmount) {
 //             let b = pixels[idx + 2];
 //             let brightnessValue = (r + g + b) / 3;
 
+//             let maxSize = poster.vw*3;
+//             // let maxSize = gridSize 
 //             let circleSize = map(brightnessValue, 0, 255, maxSize, 0);
-//             halftoneBuffer.fill(0);
-//             halftoneBuffer.noStroke();
-//             halftoneBuffer.ellipse(x, y, circleSize, circleSize);
+//             let circleOpacity = map(blurAmount, 0 , 100, 0, 255);
+
+//             fill(0,0,0,circleOpacity);
+//             noStroke();
+//             ellipse(x, y, circleSize, circleSize);
 //         }
 //     }
-//     halftoneBuffer.updatePixels();
-//     image(halftoneBuffer, 0, 0);
 // }
+
+
+//buffer working
+function applyHalftone(blurAmount) {
+    halftoneBuffer.clear();
+
+    let gridSize = constrain(map(blurAmount, 0, 20, 10, 30), 5, 30); 
+    let maxSize = gridSize;
+
+    // if (blurAmount > 0) {
+    //     console.log(gridSize)
+    // }
+
+    for (let y = 0; y < height; y += gridSize) {
+        for (let x = 0; x < width; x += gridSize) {
+            let c = get(x, y);
+            let brightnessValue = (c[0] + c[1] + c[2]) / 3;
+
+            let circleSize = map(brightnessValue, 0, 255, maxSize, 0);
+
+            let circleOpacity = map(blurAmount, 0, 50, 0, 255);
+            // let circleOpacity = 255;
+            halftoneBuffer.fill(0,0,0,circleOpacity);
+            halftoneBuffer.noStroke();
+
+            halftoneBuffer.ellipse(x, y, circleSize, circleSize);
+        }
+    }
+}
 
 
 //random easing functions to test out
@@ -310,4 +334,9 @@ function easeOutBack(t) {
     const c3 = c1 + 1;
     
     return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+}
+
+function windowResized() {
+    resizeCanvas(poster.getWindowWidth(), poster.getWindowHeight());
+    halftoneBuffer = createGraphics(width, height);
 }
