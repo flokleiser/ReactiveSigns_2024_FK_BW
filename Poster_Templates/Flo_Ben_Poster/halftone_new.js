@@ -1,5 +1,5 @@
 // - [ ] Question for Luke --> make realsense osc "lerp" less, or be less slow
-// - [ ] Imagebuffer for halftone thing
+// - [x] Imagebuffer for halftone thing
 // - [ ] grainy blur --> pretty much needs shaders, https://editor.p5js.org/one-generated-pixel/sketches/zlzoJzRp__
 
 let images = [];
@@ -102,12 +102,13 @@ function setup() {
     canvas.drawingContext.willReadFrequently = true;
 
     halftoneBuffer = createGraphics(width, height);
-    // console.log(halftoneBuffer.width, halftoneBuffer.height)
 
     poster.setup(this, "models/movenet/model.json");
 
     totalDuration = 0.6
     timePassed = 0
+    halftoneBuffer.pixelDensity(1)
+    pixelDensity(1)
 }
 
 function draw() {
@@ -120,7 +121,7 @@ function draw() {
     displayNumbers(); 
 
 
-    //static image for testing
+    // // static image for testing
     // push();
     //     imageMode(CENTER);
     //     translate(width/2-poster.vw, height/2)
@@ -132,14 +133,8 @@ function draw() {
 
     drawingContext.filter = "none";
 
-    // halftoneBuffer.loadPixels();
-    // console.log(`Pixels loaded: ${halftoneBuffer.pixels.length}`);
-
     if (blurAmount > 0) {
-        // applyHalftone(blurAmount);
-        // halftoneBuffer.background(255, 0, 0);
         applyHalftone(blurAmount/10);
-        // applyHalftone(10);
         image(halftoneBuffer, 0, 0);
     } 
 
@@ -253,7 +248,7 @@ function viewerInteraction() {
     }
 }
 
-//halftone no buffer, kinda works
+//no buffer, kinda works
 // function applyHalftone(blurAmount) {
 //     let gridSize = constrain(map(blurAmount, 0, 20, 20, 5), 20,30);
 //     // let gridSize = map(blurAmount, 0, 20, 20, 5);
@@ -274,8 +269,8 @@ function viewerInteraction() {
 //             let b = pixels[idx + 2];
 //             let brightnessValue = (r + g + b) / 3;
 
-//             let maxSize = poster.vw*3;
-//             // let maxSize = gridSize 
+//             // let maxSize = poster.vw*3;
+//             let maxSize = gridSize 
 //             let circleSize = map(brightnessValue, 0, 255, maxSize, 0);
 //             let circleOpacity = map(blurAmount, 0 , 100, 0, 255);
 
@@ -289,14 +284,15 @@ function viewerInteraction() {
 
 //buffer working
 function applyHalftone(blurAmount) {
-    halftoneBuffer.clear();
 
     let gridSize = constrain(map(blurAmount, 0, 20, 10, 30), 5, 30); 
-    let maxSize = gridSize;
+    let gridSizeX = constrain(map(blurAmount, 0, 20, 10, 30), 5, 30); 
+    let gridSizeY = constrain(map(blurAmount, 0, 20, 10, 30), 5, 30); 
 
-    // if (blurAmount > 0) {
-    //     console.log(gridSize)
-    // }
+    halftoneBuffer.clear();
+    halftoneBuffer.noStroke()
+
+    let maxSize = constrain(map(blurAmount, 0, 20, gridSize * 2, gridSize), gridSize * 0.5, gridSize * 2);
 
     for (let y = 0; y < height; y += gridSize) {
         for (let x = 0; x < width; x += gridSize) {
@@ -304,9 +300,7 @@ function applyHalftone(blurAmount) {
             let brightnessValue = (c[0] + c[1] + c[2]) / 3;
 
             let circleSize = map(brightnessValue, 0, 255, maxSize, 0);
-
-            let circleOpacity = map(blurAmount, 0, 50, 0, 255);
-            // let circleOpacity = 255;
+            let circleOpacity = map(blurAmount, 0, 50, 50, 255);
             halftoneBuffer.fill(0,0,0,circleOpacity);
             halftoneBuffer.noStroke();
 
