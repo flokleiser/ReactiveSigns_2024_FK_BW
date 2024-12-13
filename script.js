@@ -87,7 +87,8 @@ let anchorPoints = [
 
 function preload() {
     for (let i = 0; i < 10; i++) {
-        images[i] = loadImage( `./images/${i}.png` );
+        images[i] = loadImage( `/images/${i}.png` );
+        
     }
 }
 
