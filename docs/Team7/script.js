@@ -87,13 +87,13 @@ let anchorPoints = [
 
 function preload() {
     for (let i = 0; i < 10; i++) {
-        images[i] = loadImage( `/Poster_Templates/Flo_Ben_Poster/images/${i}.png` );
+        images[i] = loadImage( `/docs/Team7/images/${i}.png` );
     }
 }
 
 function setup() {
     createCanvas(poster.getWindowWidth(), poster.getWindowHeight());
-    poster.setup(this, "models/movenet/model.json");
+    poster.setup(this, "/docs/public/models/movenet/model.json");
 
     totalDuration = 0.6
     timePassed = 0
