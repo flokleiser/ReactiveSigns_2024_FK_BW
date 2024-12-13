@@ -87,7 +87,7 @@ let anchorPoints = [
 
 function preload() {
     for (let i = 0; i < 10; i++) {
-        images[i] = loadImage( `/Poster_Templates/Flo_Ben_Poster/images/${i}.png` );
+        images[i] = loadImage( `/Poster_Templates/Team7/images/${i}.png` );
     }
 }
 
