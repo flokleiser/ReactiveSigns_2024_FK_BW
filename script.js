@@ -87,13 +87,13 @@ let anchorPoints = [
 
 function preload() {
     for (let i = 0; i < 10; i++) {
-        images[i] = loadImage( `./images/${i}.png` );
+        images[i] = loadImage( `images/${i}.png` );
     }
 }
 
 function setup() {
     createCanvas(poster.getWindowWidth(), poster.getWindowHeight());
-    poster.setup(this, "./models/movenet/model.json");
+    poster.setup(this, "models/movenet/model.json");
 
     totalDuration = 0.6
     timePassed = 0
