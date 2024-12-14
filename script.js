@@ -141,7 +141,7 @@ function displayNumbers() {
     }
 
     targetInScale = 1.7;
-    targetOutScale = 8.6;
+    targetOutScale = 8.7;
     timePassed += deltaTime / 1000;
 
     if (timePassed < totalDuration) {
