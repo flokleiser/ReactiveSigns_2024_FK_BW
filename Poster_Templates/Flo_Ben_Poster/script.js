@@ -17,7 +17,7 @@ let transitionInScale = 0;
 let transitionOutScale = 1.7;
 
 let targetInScale = 1.7;
-let targetOutScale = 4.6;
+let targetOutScale = 4.7;
 
 let transitionInIncrement = 0.06;
 let transitionOutIncrement = 0.09;
@@ -141,7 +141,7 @@ function displayNumbers() {
     }
 
     targetInScale = 1.7;
-    targetOutScale = 8.6;
+    targetOutScale = 8.7;
     timePassed += deltaTime / 1000;
 
     if (timePassed < totalDuration) {
